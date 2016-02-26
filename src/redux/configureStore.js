@@ -6,7 +6,7 @@ import promiseMiddleware from 'redux-promise-middleware'
 
 export default function configureStore (initialState = {}, history) {
   // Compose final middleware and use devtools in debug environment
-  let middleware = applyMiddleware(thunk, routerMiddleware(history), promiseMiddleware)
+  let middleware = applyMiddleware(thunk, routerMiddleware(history), promiseMiddleware())
   if (__DEBUG__) {
     const devTools = window.devToolsExtension
       ? window.devToolsExtension()

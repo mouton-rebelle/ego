@@ -14,7 +14,7 @@ function CoreLayout ({ children }) {
   return (
     <div className='container app'>
       <div className='app-content'>
-        aa{children}aa
+        {children}
       </div>
     </div>
   )

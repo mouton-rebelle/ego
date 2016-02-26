@@ -40,14 +40,10 @@ export const COM_LOAD_RECENTS_REJECTED = 'COM_LOAD_RECENTS_REJECTED'
 // NOTE: "Action" is a Flow interface defined in https://github.com/TechnologyAdvice/flow-interfaces
 // If you're unfamiliar with Flow, you are completely welcome to avoid annotating your code, but
 // if you'd like to learn more you can check out: flowtype.org.
-export const postLoadPage = (page: number, nbPerPage: number): Action => {
+export const postLoadPage = (page: number, nbPerPage: number = 10): Action => {
   let range = [(page - 1) * nbPerPage, page * nbPerPage]
   return {
-    types: [
-      POST_LOAD_PAGE_PENDING,
-      POST_LOAD_PAGE_FULFILLED,
-      POST_LOAD_PAGE_REJECTED
-    ],
+    type: 'POST_LOAD_PAGE',
     meta: {page, nbPerPage},
     payload: {
       promise: request('/api/posts').set('range', range.join('-')).promise()
@@ -84,6 +80,7 @@ const initialState = {
 }
 
 export default function posts (state = initialState, action) {
+  console.log(action)
   switch (action.type) {
     case COM_SAVE_FULFILLED:
       let com = action.payload.body
