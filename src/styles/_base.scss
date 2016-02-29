@@ -6,7 +6,9 @@ can easily be swapped out without `core.scss` ever having to know.
 
 For example:
 
-@import './variables/colors'
 @import './variables/components'
 @import './themes/default'
 */
+
+@import './variables/text';
+@import './variables/colors';

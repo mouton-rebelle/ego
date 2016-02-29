@@ -1,0 +1,41 @@
+.nav{
+  li{
+    display: inline;
+  }
+}
+
+.head-nav{
+  &__item{
+    &__link{
+      padding: 2vw;
+      font-size: 2vw;
+      text-decoration: none;
+      display: inline-block;
+      color: $brand-alt;
+      font-family: 'Roboto Mono';
+      font-weight: 300;
+      text-transform: uppercase;
+    }
+  }
+}
+
+.logo{
+  font-family: 'Roboto Mono';
+  font-weight: 300;
+  font-size: 10vw;
+  color:$brand-primary;
+  &__alt{
+    color:$brand-alt;
+  }
+}
+
+
+.header{
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid $light-grey;
+  margin-bottom: 20px;
+  &__logo{
+    flex-grow:2;
+  }
+}

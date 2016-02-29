@@ -7,7 +7,7 @@ import { postLoadPage } from 'redux/modules/posts'
 // very easy to navigate to files regardless of how deeply nested
 // your current file is.
 import CoreLayout from 'layouts/CoreLayout/CoreLayout'
-// import PagedPosts from 'containers/PagedPosts'
+import PagedPosts from 'views/PagedPosts'
 
 const About = React.createClass({
   render () {
@@ -17,16 +17,17 @@ const About = React.createClass({
 
 export default (store) => {
   const onEnterPage = (nextState, transition) => {
-    store.dispatch(postLoadPage(nextState.params.currentPage || 1))
+    store.dispatch(postLoadPage(nextState.params.currentPage*1 || 1))
   }
   return (
     <Route path='/' component={CoreLayout}>
-      <IndexRoute component={About} onEnter={onEnterPage} />
-      <Route path='page/:currentPage' component={About} onEnter={onEnterPage}/>
+      <IndexRoute component={PagedPosts} onEnter={onEnterPage} />
+      <Route path='page/:currentPage' component={PagedPosts} onEnter={onEnterPage}/>
+      <Route path='/about' component={About}/>
     </Route>
   )
 }
 
 // <Route path='/post/:id(/:imageId)' component={SinglePostPage}/>
-// <Route path='/about' component={About}/>
+
 // <Route path='/search' component={Search}/>

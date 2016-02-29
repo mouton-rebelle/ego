@@ -1,0 +1,38 @@
+.pager{
+  margin:30px;
+  display: block;
+  opacity: 0.6;
+  transition:opacity 0.2s ease-out;
+  &:hover{
+    opacity: 1;
+  }
+  text-align: right;
+  font-family: 'Roboto Mono';
+  &__legend{
+    text-transform: uppercase;
+    color:#8F8C8E;
+  }
+  &__content{
+    &__item{
+      display: inline-block;
+      padding:2px 8px;
+      background-color: #B2A1AA;
+      margin:3px;
+      color:#FFF;
+      text-decoration: none;
+      border-radius: 3px;
+      &:last-child{
+        margin-right: 0;
+      }
+      &--active{
+        background-color:$brand-primary;
+      }
+      &--hoverable:hover{
+        color:$brand-primary;
+      }
+      &--disabled{
+        opacity: 0.4;
+      }
+    }
+  }
+}

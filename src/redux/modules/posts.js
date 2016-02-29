@@ -73,6 +73,7 @@ export const actions = {
 // ------------------------------------
 const initialState = {
   count: 0,
+  currentPage: 1,
   nbPages: 0,
   byId: {},
   byPage: {},
@@ -102,6 +103,7 @@ export default function posts (state = initialState, action) {
       })
       return {
         count: parseInt(count),
+        currentPage: action.meta.page,
         pending: false,
         nbPages: parseInt(count / nbPerPage),
         byId: {...state.byId, ...newPostsById},

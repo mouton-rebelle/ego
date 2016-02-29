@@ -1,6 +1,8 @@
-:global {
+:global{
   @import 'base';
   @import 'vendor/normalize';
+  @import 'components/header';
+  @import 'components/pager';
 
   // Some best-practice CSS that's useful for most apps
   // Just remove them if they're not what you want
@@ -13,11 +15,21 @@
     margin: 0;
     padding: 0;
     height: 100%;
+    background: #FFF;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 16px
   }
 
   *,
   *:before,
   *:after {
     box-sizing: inherit;
+  }
+
+  .content{
+    max-width: 1280px;
+    position: relative;
+    padding: 0 2%;
+    margin: 0 auto;
   }
 }
