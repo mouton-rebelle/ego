@@ -1,0 +1,36 @@
+.pHead{
+  display: flex;
+  padding: 0 0 0.2em 0;
+  align-items:center;
+  &__info{
+    flex:3 0 200px;
+    font-size: 1rem;
+    &__title{
+      text-decoration: none;
+      @extend %custom-font;
+      font-weight: 300;
+      font-size: 1.5em;
+      line-height: 1em;
+      text-transform: uppercase;
+      margin-bottom: 0.1em;
+      color: $brand-alt;
+      &--dark{
+        color: $brand-primary;
+      }
+    }
+    &__desc{
+      color:#3F3739;
+      font-size: 0.8em;
+      &--dark{
+        color:$light-grey;
+      }
+    }
+  }
+  &__date{
+    flex:1 0 100px;
+  }
+  &--dark{
+    background:rgba(0,0,0,0.8);
+    padding:2%;
+  }
+}

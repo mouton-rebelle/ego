@@ -1,0 +1,32 @@
+.almn{
+  border:1px solid $brand-alt;
+  display: flex;
+  flex-direction:column;
+  text-align: center;
+  font-size: 0.7em;
+  width: 40px;
+  border-radius: 3px;
+  @extend %custom-font;
+  &__year{
+    color:$brand-alt;
+  }
+  &__date{
+    font-size: 1.7em;
+    line-height: 1em;
+    padding-bottom: 0.13em;
+  }
+  &__month{
+    background-color: $brand-alt;
+    color:#FFF;
+    text-transform: uppercase;
+  }
+}
+.pdr{
+  width:100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items:center;
+  &__item{
+    margin-left: 5px;
+  }
+}
