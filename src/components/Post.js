@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 
 import PostHeader from './PostHeader'
+import PostTree from './PostTree'
 
 function flattenImages (c, images) {
   if (c.image) {
@@ -22,6 +23,7 @@ const Post = ({ post }) => {
   return (
     <section className='element'>
       <PostHeader dates={dates} desc={post.desc} kind='light' title={post.title}/>
+      <PostTree child={post.child} horizontal={post.horizontal} />
     </section>
   )
 }

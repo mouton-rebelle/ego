@@ -1,0 +1,42 @@
+.image--border{
+  &:before{
+    content:'';
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom: 0;
+    box-shadow: inset 0px 0px 0px 1px #FFF;
+    display: block;
+  }
+  position: relative;
+  z-index: 999;
+}
+
+.image{
+  position:relative;
+  display: block;
+}
+
+.element{
+  margin-bottom: 80px;
+  &__image{
+    max-width: 100%;
+    height: auto;
+    width:100%;
+  }
+
+  &__content{
+    position: relative;
+    display: flex;
+    align-items:stretch;
+    background: tomato;
+    flex-direction:column;
+    &--horizontal{
+      flex-direction:row;
+    }
+    &--root{
+      overflow: hidden;
+    }
+  }
+}

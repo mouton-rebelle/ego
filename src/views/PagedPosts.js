@@ -21,6 +21,7 @@ export class PagedPosts extends React.Component {
     })
     return (
       <div className='container text-center'>
+        <Pager basePath='/page/' currentPage={this.props.currentPage} nbPages={this.props.nbPages}/>
         <PostsList posts={posts} />
         <Pager basePath='/page/' currentPage={this.props.currentPage} nbPages={this.props.nbPages}/>
       </div>
