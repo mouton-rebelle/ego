@@ -1,13 +1,14 @@
 import React from 'react'
 import { Route, IndexRoute, Link } from 'react-router'
-import { postLoadPage } from 'redux/modules/posts'
+
 // NOTE: here we're making use of the `resolve.root` configuration
 // option in webpack, which allows us to specify import paths as if
 // they were from the root of the ~/src directory. This makes it
 // very easy to navigate to files regardless of how deeply nested
 // your current file is.
 import CoreLayout from 'layouts/CoreLayout/CoreLayout'
-import PagedPosts from 'views/PagedPosts'
+import PagedPostsView from 'views/PagedPostsView'
+import SinglePostView from 'views/SinglePostView'
 
 const About = React.createClass({
   render () {
@@ -16,18 +17,13 @@ const About = React.createClass({
 })
 
 export default (store) => {
-  const onEnterPage = (nextState, transition) => {
-    store.dispatch(postLoadPage(nextState.params.currentPage*1 || 1))
-  }
+  // here I can add an onEnter method to check for auth on admin routes
   return (
     <Route path='/' component={CoreLayout}>
-      <IndexRoute component={PagedPosts} onEnter={onEnterPage} />
-      <Route path='page/:currentPage' component={PagedPosts} onEnter={onEnterPage}/>
+      <IndexRoute component={PagedPostsView} />
+      <Route path='/page/:currentPage' component={PagedPostsView}/>
+      <Route path='/post/:postId(/:imageId)' component={SinglePostView}/>
       <Route path='/about' component={About}/>
     </Route>
   )
 }
-
-// <Route path='/post/:id(/:imageId)' component={SinglePostPage}/>
-
-// <Route path='/search' component={Search}/>

@@ -1,11 +1,15 @@
 :global{
   @import 'base';
   @import 'vendor/normalize';
+  @import 'components/btn';
   @import 'components/header';
   @import 'components/pager';
-  @import 'components/PostDateRange';
-  @import 'components/PostHeader';
+  @import 'components/postDateRange';
+  @import 'components/postHeader';
+  @import 'components/postDetails';
+  @import 'components/imageInfo';
   @import 'components/element';
+  @import 'components/tag';
 
   // Some best-practice CSS that's useful for most apps
   // Just remove them if they're not what you want

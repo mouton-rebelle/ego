@@ -1,0 +1,15 @@
+.btn{
+  @extend %custom-font;
+  display: inline-block;
+  padding: 3px 7px;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #FFF;
+  border-radius: 2;
+  border:0;
+  letter-spacing: 0.06em;
+  background-color: $brand-primary;
+  &:hover{
+    background-color:#000
+  }
+}

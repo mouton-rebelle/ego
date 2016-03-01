@@ -22,6 +22,9 @@ let listPostImageIds = function (post) {
 }
 
 let replaceImagesInPost = function (post, images, id) {
+  if (!post) {
+    return post
+  }
   if (!post.child && post._id) {
     post.image = images.filter(function (img) {
       return img._id + '' === post._id + ''

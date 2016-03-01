@@ -51,13 +51,10 @@ export const postLoadPage = (page: number, nbPerPage: number = 10): Action => {
   }
 }
 
-export const postLoadById = (id: number): Action => {
+export const postLoadById = (id: string): Action => {
   return {
-    types: [
-      POST_LOAD_BYID_PENDING,
-      POST_LOAD_BYID_FULFILLED,
-      POST_LOAD_BYID_REJECTED
-    ],
+    type: 'POST_LOAD_BYID',
+    meta: {id},
     payload: {
       promise: request(`/api/post/${id}`).promise()
     }
@@ -73,11 +70,11 @@ export const actions = {
 // ------------------------------------
 const initialState = {
   count: 0,
-  currentPage: 1,
   nbPages: 0,
   byId: {},
   byPage: {},
-  pending: false
+  loadingPages: [],
+  loadedPages: []
 }
 
 export default function posts (state = initialState, action) {
@@ -90,7 +87,7 @@ export default function posts (state = initialState, action) {
       return {...state}
 
     case POST_LOAD_PAGE_PENDING:
-      return {...state, pending: true}
+      return {...state, loadingPages: [...state.loadingPages, action.meta.page]}
 
     case POST_LOAD_PAGE_FULFILLED:      // parses our header "posts 30-40/2000"
       let [, count] = action.payload.headers['content-range'].replace('posts ', '').split('/')
@@ -103,8 +100,8 @@ export default function posts (state = initialState, action) {
       })
       return {
         count: parseInt(count),
-        currentPage: action.meta.page,
-        pending: false,
+        loadedPages: [...state.loadedPages, action.meta.page],
+        loadingPages: state.loadingPages.filter((p) => p!==action.meta.page),
         nbPages: parseInt(count / nbPerPage),
         byId: {...state.byId, ...newPostsById},
         byPage: {...state.byPage, [action.meta.page]: byPage}
