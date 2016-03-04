@@ -18,7 +18,7 @@ const browserHistory = useRouterHistory(createBrowserHistory)({
 // react-router-redux of its location.
 const initialState = window.__INITIAL_STATE__
 const store = configureStore(initialState, browserHistory)
-const history = syncHistoryWithStore(browserHistory, store, {
+export const history = syncHistoryWithStore(browserHistory, store, {
   selectLocationState: (state) => state.router
 })
 

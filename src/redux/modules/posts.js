@@ -78,7 +78,6 @@ const initialState = {
 }
 
 export default function posts (state = initialState, action) {
-  console.log(action)
   switch (action.type) {
     case COM_SAVE_FULFILLED:
       let com = action.payload.body
