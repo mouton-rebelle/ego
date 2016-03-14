@@ -5,34 +5,34 @@ import * as _ from 'lodash'
 
 let router = new Router()
 
-router.get('/api/comments/post/:id', function *(next) {
-  this.type = 'application/json'
-  let comments = yield commentsApi.getByPostId(this.params.id)
-  this.body = JSON.stringify(comments)
+router.get('/api/comments/post/:id', async function (ctx, next) {
+  ctx.type = 'application/json'
+  let comments = await commentsApi.getByPostId(ctx.params.id)
+  ctx.body = JSON.stringify(comments)
 })
 
-router.get('/api/post/:id', function *(next) {
-  this.type = 'application/json'
-  let post = yield postsApi.getById(this.params.id)
-  this.body = JSON.stringify(post)
+router.get('/api/post/:id', async function (ctx, next) {
+  ctx.type = 'application/json'
+  let post = await postsApi.getById(ctx.params.id)
+  ctx.body = JSON.stringify(post)
 })
 
-router.post('/api/comments', function *(next) {
-  this.type = 'application/json'
-  let comment = yield commentsApi.save(this.request.body)
-  this.body = JSON.stringify(comment)
+router.post('/api/comments', async function (ctx, next) {
+  ctx.type = 'application/json'
+  let comment = await commentsApi.save(ctx.request.body)
+  ctx.body = JSON.stringify(comment)
 })
 
-router.get('/api/posts', function *(next) {
-  let range = _.get(this.request.headers, 'range', '0-10')
+router.get('/api/posts', async function (ctx, next) {
+  let range = _.get(ctx.request.headers, 'range', '0-10')
   let [ start = 0, end = 10 ] = range.split('-')
-  let { posts, contentRange, partial } = yield postsApi.getByRange(start, end)
-  this.type = 'application/json'
-  this.status = partial ? 206 : 200
-  this.set('Content-Range', contentRange)
-  this.set('Accept-Ranges', 'posts')
-  this.set('Range-Unit', 'posts')
-  this.body = JSON.stringify(posts)
+  let { posts, contentRange, partial } = await postsApi.getByRange(start, end)
+  ctx.type = 'application/json'
+  ctx.status = partial ? 206 : 200
+  ctx.set('Content-Range', contentRange)
+  ctx.set('Accept-Ranges', 'posts')
+  ctx.set('Range-Unit', 'posts')
+  ctx.body = JSON.stringify(posts)
 })
 
 export default router

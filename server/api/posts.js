@@ -1,11 +1,10 @@
 import * as _ from 'lodash'
 import Monk from 'monk'
-import CoMonk from 'co-monk'
 
 let conn = Monk('localhost/ego')
 let db = {
-  images: CoMonk(conn.get('images')),
-  posts: CoMonk(conn.get('posts'))
+  images: conn.get('images'),
+  posts: conn.get('posts')
 }
 
 const maxPerPage = 30
@@ -39,22 +38,22 @@ let replaceImagesInPost = function (post, images, id) {
   return post
 }
 
-export const getById = function *(id) {
-  let post = yield db.posts.findOne({_id: id})
+export const getById = async function(id) {
+  let post = await db.posts.findOne({_id: id})
   let ids = listPostImageIds(post)
-  let images = yield db.images.find({_id: {$in: ids}})
+  let images = await db.images.find({_id: {$in: ids}})
   return replaceImagesInPost(post, images, id)
 }
 
-export const getByRange = function *(...range) {
+export const getByRange = async function (...range) {
   let count = Math.min(range[1] - range[0], maxPerPage)
-  let posts = yield db.posts.find({},
+  let posts = await db.posts.find({},
     {
       sort: { order: -1 },
       limit: count,
       skip: range[0]
     })
-  let total = yield db.posts.count({})
+  let total = await db.posts.count({})
 
   // gather images _id
   let ids = _.uniq(posts.reduce((cids, post) => {
@@ -63,7 +62,7 @@ export const getByRange = function *(...range) {
   }, []))
 
   // query images
-  let images = yield db.images.find({_id: {$in: ids}})
+  let images = await db.images.find({_id: {$in: ids}})
 
   // replace child images in posts
   posts = posts.map((post) => {
@@ -75,8 +74,4 @@ export const getByRange = function *(...range) {
     contentRange: `posts ${range[0]}-${range[1]}/${total}`,
     partial: posts.length < total
   }
-}
-
-export const count = function () {
-  return db.posts.count({})
 }

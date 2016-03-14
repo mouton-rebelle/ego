@@ -1,5 +1,6 @@
 import Koa from 'koa'
 import convert from 'koa-convert'
+import bodyParser from 'koa-bodyparser'
 import webpack from 'webpack'
 import webpackConfig from '../build/webpack.config'
 import historyApiFallback from 'koa-connect-history-api-fallback'
@@ -15,11 +16,12 @@ const debug = _debug('app:server')
 const paths = config.utils_paths
 const app = new Koa()
 
-// This rewrites all routes requests to the root /index.html file
+// This rewrites all routes requests to the root /index.h tml file
 // (ignoring file requests). If you want to implement isomorphic
 // rendering, you'll want to remove this middleware.
 app
-  .use(convert(api.routes()))
+  .use(api.routes())
+  .use(bodyParser())
   .use(convert(historyApiFallback({
     verbose: false
   })))

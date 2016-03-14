@@ -1,21 +1,20 @@
 import Monk from 'monk'
-import CoMonk from 'co-monk'
 
 let conn = Monk('localhost/ego')
 let db = {
-  comments: CoMonk(conn.get('comments')),
-  posts: CoMonk(conn.get('posts'))
+  comments: conn.get('comments'),
+  posts: conn.get('posts')
 }
 
-export const getByPostId = function *(id) {
-  return yield db.comments.find({post: db.posts.id(id)})
+export const getByPostId = async function (id) {
+  return await db.comments.find({post: db.posts.id(id)})
 }
 
-export const save = function *(comment) {
+export const save = async function (comment) {
   comment.post = db.posts.id(comment.post)
   comment.when = new Date()
-  yield db.comments.insert(comment)
-  yield db.posts.updateById(comment.post,
+  await db.comments.insert(comment)
+  await db.posts.updateById(comment.post,
     {
       $push:
       {
@@ -26,8 +25,8 @@ export const save = function *(comment) {
   return comment
 }
 
-export const getRecents = function *() {
-  let comments = yield db.comments.find({},
+export const getRecents = async function () {
+  let comments = await db.comments.find({},
     {
       sort: { when: -1 },
       limit: 10,
