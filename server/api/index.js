@@ -1,5 +1,6 @@
 import Router from 'koa-router'
 import * as commentsApi from './comments'
+import asyncBusboy from 'async-busboy';
 import * as postsApi from './posts'
 import * as _ from 'lodash'
 
@@ -21,6 +22,13 @@ router.post('/api/comments', async function (ctx, next) {
   ctx.type = 'application/json'
   let comment = await commentsApi.save(ctx.request.body)
   ctx.body = JSON.stringify(comment)
+})
+
+router.post('/api/upload', async function (ctx, next) {
+  const { files } = await asyncBusboy(ctx.req)
+  console.log(files)
+  ctx.type = 'application/json'
+  ctx.body = JSON.stringify(files)
 })
 
 router.get('/api/posts', async function (ctx, next) {

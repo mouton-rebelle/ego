@@ -26,6 +26,7 @@ export const history = syncHistoryWithStore(browserHistory, store, {
 // the store to the route definitions so that routes have access to it for
 // hooks such as `onEnter`.
 const routes = makeRoutes(store)
+// const adminRoutes = makeAdminRoutes(store)
 
 // Now that redux and react-router have been configured, we can render the
 // React application to the DOM!

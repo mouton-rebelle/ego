@@ -33,7 +33,7 @@ export class PagedPostsView extends React.Component {
 
   render () {
     return (
-      <div className='container text-center'>
+      <div className='container'>
         <Pager basePath='/page/' currentPage={this.props.currentPage} nbPages={this.props.nbPages}/>
         <PostsList posts={this.props.posts} />
         <Pager basePath='/page/' currentPage={this.props.currentPage} nbPages={this.props.nbPages}/>

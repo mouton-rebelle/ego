@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import Header from 'components/Header'
-import '../../styles/core.scss'
+import '../styles/core.scss'
 
 function CoreLayout ({ children }) {
   return (

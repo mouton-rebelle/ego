@@ -15,11 +15,13 @@
 
 .image{
   position:relative;
+  line-height: 0;
   display: block;
 }
 
 .element{
   margin-bottom: 80px;
+  overflow: hidden;
   &__image{
     max-width: 100%;
     height: auto;
@@ -30,7 +32,6 @@
     position: relative;
     display: flex;
     align-items:stretch;
-    background: tomato;
     flex-direction:column;
     &--horizontal{
       flex-direction:row;

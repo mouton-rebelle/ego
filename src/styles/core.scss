@@ -3,7 +3,9 @@
   @import 'vendor/normalize';
   @import 'components/btn';
   @import 'components/header';
+  @import 'components/grid';
   @import 'components/pager';
+  @import 'components/dropzone';
   @import 'components/postDateRange';
   @import 'components/postHeader';
   @import 'components/postDetails';
@@ -33,7 +35,7 @@
     box-sizing: inherit;
   }
 
-  .content{
+  .container{
     max-width: 1280px;
     position: relative;
     padding: 0 2%;

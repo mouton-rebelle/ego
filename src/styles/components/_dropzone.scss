@@ -1,0 +1,22 @@
+.dropzone{
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: #EEE;
+  border:1px dashed #CCC;
+  &--active{
+    border: 1px solid greenyellow;
+  }
+  &--rejected{
+    border: 1px solid tomato;
+  }
+  &__legend{
+    text-transform: uppercase;
+    font-size: 36px;
+    font-weight: bold;
+    color:#CCC;
+    padding: 10%;
+  }
+}

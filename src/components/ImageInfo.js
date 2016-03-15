@@ -25,7 +25,6 @@ export default class ImageInfo extends Component {
   }
 
   parseSpeed (s) {
-    console.log(s)
     if (s.indexOf('/') !== -1) {
       let [a, b] = s.split('/')
       let base = Math.pow(2, (a / b))
