@@ -29,7 +29,7 @@ export const uploadFiles = function (files) {
     req.attach(file.name, file)
   })
   return {
-    types: 'FILE_UPLOAD',
+    type: 'FILE_UPLOAD',
     payload: {
       promise: req.promise()
     }
@@ -39,12 +39,16 @@ export const uploadFiles = function (files) {
 export default function files (state = initialState, action) {
   switch (action.type) {
     case FILE_UPLOAD_FULFILLED:
-      state.queue = [...state.queue, ...action.payload.body]
-      return state
+      return {
+        ...state,
+        queue: [...state.queue, ...action.payload.body]
+      }
 
     case FILEQUEUE_LOAD_FULFILLED:
-      state.queue = [...state.queue]
-      return state
+      return {
+        ...state,
+        queue: action.payload.body
+      }
 
     default:
       return state
