@@ -3,7 +3,7 @@ import * as commentsApi from './comments'
 import asyncBusboy from 'async-busboy'
 import * as postsApi from './posts'
 import * as _ from 'lodash'
-import { processUploadedFile } from './file'
+import { processUploadedFile, loadUploadedFiles } from './file'
 
 let router = new Router()
 
@@ -23,6 +23,12 @@ router.post('/api/comments', async function (ctx, next) {
   ctx.type = 'application/json'
   let comment = await commentsApi.save(ctx.request.body)
   ctx.body = JSON.stringify(comment)
+})
+
+router.get('/api/files', async function (ctx, next) {
+  const files = await loadUploadedFiles()
+  ctx.type = 'application/json'
+  ctx.body = JSON.stringify(files)
 })
 
 router.post('/api/upload', async function (ctx, next) {

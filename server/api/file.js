@@ -1,9 +1,14 @@
 import gmBase from 'gm'
 import * as _ from 'lodash'
-import fs from 'fs'
-
+import fs from 'fs-promise'
+import moment from 'moment'
 const gm = gmBase.subClass({imageMagick: true})
 
+// probably make this config or params
+export const UPLOAD_DIR = './src/static/upload'
+export const THUMB_UPLOAD_DIR = './src/static/upload/thmb'
+
+// exif metas we want
 const metas = {
   date: '%[EXIF:DateTimeOriginal]',
   tags: '%[IPTC:2:25]',
@@ -13,10 +18,41 @@ const metas = {
   bias: '%[EXIF:ExposureBiasValue]',
   apn: '%[EXIF:Model]'
 }
-// a string containing all the exif we want to retrieve
+// a string containing all the exif we want to retrieve, that we'll pass to identify
 const metaString = _.map(metas, (m, k) => k+'####'+m).join('@@@@')
 
-export function getExifPromise (source) {
+// rounds nicely aperture values
+const parseAperture = (ap) => {
+  if (ap.indexOf('/') !== -1) {
+    let [a, b] = ap.split('/')
+    return Math.round(a / b * 10) / 10
+  } else {
+    return ap
+  }
+}
+
+// formats nicely speeds values (shitty exif norm)
+const parseSpeed = (s) => {
+  if (s.indexOf('/') !== -1) {
+    let [a, b] = s.split('/')
+    let base = Math.pow(2, (a / b))
+    if (base > 1) {
+      return `1/${Math.floor(base/10)*10}`
+    } else {
+      return Math.round(1/base*10)/10
+    }
+  } else {
+    return s
+  }
+}
+
+/**
+ * Extract exif data from file or stream
+ *
+ * @param {String} or {ReadableStream} [source]
+ * @return {object} extracted exif data
+ */
+export async function getExifPromise (source) {
   return new Promise((resolve, reject) => {
     gm(source).identify(metaString, (error, data) => {
       if (error) {
@@ -26,7 +62,24 @@ export function getExifPromise (source) {
         data
           .split('@@@@')
           .forEach((kvString) => {
-            const [key, value] = kvString.split('####')
+            let [key, value] = kvString.split('####')
+            switch (key) {
+              case 'date':
+                value = moment.utc(value, 'YYYY:MM:DD HH:mm:ss').toDate()
+                break
+              case 'tags':
+                value = value.trim() ? value.trim().split(';') : []
+                break
+              case 'speed':
+                value = parseSpeed(value)
+                break
+              case 'aperture':
+                value = parseAperture(value)
+                break
+              case 'iso':
+                value = value * 1
+                break
+            }
             exif[key] = value
           })
         resolve(exif)
@@ -35,9 +88,25 @@ export function getExifPromise (source) {
   })
 }
 
-export function writeThumb (source, dest, size = 200) {
-  return new Promise((resolve, reject) => {
-    gm(source)
+/**
+ * Write a thumbnail of [source] to [dest], fitting in a [size]px square
+ * Does nothing if dest already exists
+ *
+ * @param {String} or {ReadableStream} [source] source image
+ * @param {String} [dest] destination path
+ * @param {Int} [size]
+ *
+ * @return {object} extracted exif data
+ */
+export async function writeThumb (source, dest, size = 200) {
+  let already = false
+  try {
+    already = await fs.access(dest, fs.F_OK)
+  } catch (err) {
+  }
+  if (!already) {
+    return await new Promise((resolve, reject) => {
+      gm(source)
       .resize(size, size)
       .noProfile()
       .write(dest, (err) => {
@@ -47,14 +116,24 @@ export function writeThumb (source, dest, size = 200) {
           resolve(dest)
         }
       })
-  })
+    })
+  } else {
+    return dest
+  }
 }
 
+/**
+ * Reads the uploaded file [stream], writes it to upload, generate a thumb &
+ * extracts exif data -- what could go wrong ?
+ *
+ * @param {ReadableStream} [source] stream image
+ * @return {object} containing filename & exif data
+ */
 export function processUploadedFile (stream) {
   return new Promise((resolve, reject) => {
     const filename = stream.filename
-    const dest = `./src/static/upload/${filename}`
-    const thumb = `./src/static/upload/thmb/${filename}`
+    const dest = `${UPLOAD_DIR}/${filename}`
+    const thumb = `${THUMB_UPLOAD_DIR}/${filename}`
     stream.on('end', () => {
       // the file is copied in dest
       getExifPromise(dest).then(
@@ -63,8 +142,7 @@ export function processUploadedFile (stream) {
             () => {
               resolve({
                 exif,
-                thumb: thumb.substring(12),
-                source: dest.substring(12)
+                filename
               })
             },
             (err) => {
@@ -81,5 +159,38 @@ export function processUploadedFile (stream) {
       reject(err)
     })
     stream.pipe(fs.createWriteStream(dest))
+  })
+}
+
+/**
+ * Retrieves all the files in the upload directory, generate a thumb if missing
+ * extracts exif data and return as an array of {filename,exif}
+ *
+ * @return {array} containing filename & exif data
+ */
+export async function loadUploadedFiles () {
+  const files = await fs.readdir(UPLOAD_DIR)
+  // we need this to know if we got a file or a directory
+  const filesInfos = await Promise.all(
+    files.map((file) => fs.stat(`${UPLOAD_DIR}/${file}`))
+  )
+  // we filter (TODO cleaner way to exclude / include -- dotfiles ? mimetype ? extension ?)
+  const filtered = files.filter((file, key) => filesInfos[key].isFile() && file !== '.DS_Store')
+
+  // let's wait till we are sure all thumbs are generated
+  await Promise.all(
+    filtered.map((file) => writeThumb(`${UPLOAD_DIR}/${file}`, `${THUMB_UPLOAD_DIR}/${file}`))
+  )
+
+  // let's wait till we got all the exifs we need
+  const exifs = await Promise.all(
+    filtered.map((file) => getExifPromise(`${UPLOAD_DIR}/${file}`))
+  )
+
+  return filtered.map((filename, key) => {
+    return {
+      filename,
+      exif: exifs[key]
+    }
   })
 }

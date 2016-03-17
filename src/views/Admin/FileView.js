@@ -1,17 +1,19 @@
 import React, { PropTypes } from 'react'
-import { uploadFiles, loadQueue } from 'redux/modules/files'
+import { uploadFiles, loadQueue, hoverFile } from 'redux/modules/files'
 import { connect } from 'react-redux'
-import Uploader from 'components/admin/uploader'
+import Uploader from 'components/admin/Uploader'
+import FileList from 'components/admin/FileList'
 
 export class FileView extends React.Component {
   static propTypes = {
     uploadFiles: PropTypes.func.isRequired,
     loadQueue: PropTypes.func.isRequired,
+    hoverFile: PropTypes.func.isRequired,
+    hovered: PropTypes.object.isRequired,
     queue: PropTypes.array.isRequired
   };
 
   render () {
-    console.log(this.props)
     return (
       <div className='container'>
         <div className='row'>
@@ -19,13 +21,12 @@ export class FileView extends React.Component {
             <Uploader uploadFiles={this.props.uploadFiles}/>
           </div>
           <div className='col-40'>
-            {
-              this.props.queue.map((file) =>
-                <div>
-                  <img src={file.thumb} />{file.source}
-                </div>
-              )
-            }
+            <FileList
+              hovered={this.props.hovered}
+              files={this.props.queue}
+              hover={this.props.hoverFile}
+              loadFiles={this.props.loadQueue}
+            />
           </div>
         </div>
       </div>
@@ -34,12 +35,15 @@ export class FileView extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state)
+  let filtered = state.files.queue.filter((f) => f.filename === state.files.hover)
+  console.log(filtered)
   return {
-    queue: state.files.queue
+    queue: state.files.queue,
+    hovered: filtered.length === 1 ? filtered[0] : false
   }
 }
 export default connect((mapStateToProps), {
   uploadFiles,
+  hoverFile,
   loadQueue
 })(FileView)

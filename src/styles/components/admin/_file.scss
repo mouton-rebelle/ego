@@ -1,0 +1,13 @@
+.fileList{
+  display: flex;
+  flex-wrap: wrap;
+}
+.file{
+  flex-basis: 100px;
+  height: 100px;
+  background-color: #EEE;
+  background-size: cover;
+  margin:2px;
+  border:2px solid $brand-primary;
+  overflow: hidden;
+}

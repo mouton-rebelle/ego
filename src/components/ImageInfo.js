@@ -1,11 +1,21 @@
 import React, { PropTypes, Component } from 'react'
 import Tag from './Tag'
+import cx from 'classnames'
 import moment from 'moment'
 
 export default class ImageInfo extends Component {
 
   static propTypes = {
-    image: PropTypes.object.isRequired
+    tags: PropTypes.array.isRequired,
+    takenOn: PropTypes.string.isRequired,
+    placement: PropTypes.string.isRequired, // TODO oneof ?
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    apn: PropTypes.string,
+    speed: PropTypes.string.isRequired,
+    aperture: PropTypes.number.isRequired,
+    iso: PropTypes.number.isRequired,
+    bias: PropTypes.string.isRequired
   }
 
   renderTag (t) {
@@ -15,41 +25,20 @@ export default class ImageInfo extends Component {
     return <Tag key={t} {...props}/>
   }
 
-  parseAperture (ap) {
-    if (ap.indexOf('/') !== -1) {
-      let [a, b] = ap.split('/')
-      return Math.round(a / b * 10) / 10
-    } else {
-      return ap
-    }
-  }
-
-  parseSpeed (s) {
-    if (s.indexOf('/') !== -1) {
-      let [a, b] = s.split('/')
-      let base = Math.pow(2, (a / b))
-      if (base > 1) {
-        return `1/${Math.floor(base/10)*10}`
-      } else {
-        return Math.round(1/base*10)/10
-      }
-    } else {
-      return s
-    }
-  }
-
   render () {
-    const {image} = this.props
+    const {placement = 'bottom', tags, takenOn, title, description, speed, aperture, iso, bias, apn} = this.props
+    const classes = cx('imgInfo', `imgInfo--${placement}`)
     return (
-      <div className='imgInfo'>
-        <h4 className='imgInfo__title'>{image.label}</h4>
-        <p className='imgInfo__desc' dangerouslySetInnerHTML={{__html: image.desc}}/>
-        <p className='imgInfo__desc'>{moment(image.takenOn).format('DD/MM/YYYY [@] HH:mm')}</p>
+      <div className={classes}>
+        <h4 className='imgInfo__title'>{title}</h4>
+        <p className='imgInfo__desc' dangerouslySetInnerHTML={{__html: description}}/>
+        <p className='imgInfo__desc'>{moment(takenOn).format('DD/MM/YYYY [@] HH:mm')}</p>
         <p className='imgInfo__desc'>
-          f{this.parseAperture(image.aperture)}&nbsp;
-          {this.parseSpeed(image.speed)}s&nbsp;
-          iso: {image.iso} {image.bias}</p>
-        {image.tags
+          {apn}&nbsp;
+          f{aperture}&nbsp;
+          {speed}s&nbsp;
+          iso: {iso} {bias}</p>
+        {tags
             .sort((a, b) => a > b ? 1 : -1)
             .map((t) => this.renderTag(t))
         }

@@ -80,6 +80,19 @@ export default class Post extends Component {
     this.prevUrl = `${postUrl}/${this.images[prev]._id}`
   }
 
+  imageToInfoProps (image) {
+    return {
+      tags: image.tags,
+      takenOn: image.takenOn,
+      title: image.label,
+      description: image.desc,
+      speed: image.speed,
+      aperture: image.aperture,
+      iso: image.iso,
+      bias: image.bias
+    }
+  }
+
   render () {
     const {title, desc, id} = this.props
     const postUrl = `/post/${id}`
@@ -107,9 +120,12 @@ export default class Post extends Component {
                   </Link>
                 )
               })}
-              <ImageInfo image={this.image} />
+              <ImageInfo placement='bottom' {...this.imageToInfoProps(this.image)} />
             </div>
-          ) : <div className='imagePicker'><ImageInfo image={this.image} /></div>}
+          ) : <div className='imagePicker'>
+            <ImageInfo placement='bottom' {...this.imageToInfoProps(this.image)} />
+          </div>
+        }
         </div>
       </div>
     )
