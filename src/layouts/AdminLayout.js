@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import Header from 'components/Admin/Header'
+import Header from 'components/admin/Header'
 
 function AdminLayout ({ children }) {
   return (
