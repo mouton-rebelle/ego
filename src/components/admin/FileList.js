@@ -10,8 +10,18 @@ export default class FileList extends Component {
     loadFiles: PropTypes.func.isRequired
   };
 
+  constructor (props) {
+    super(props)
+    this.hoverMe = this.hoverMe.bind(this)
+  }
+
   componentWillMount () {
     this.props.loadFiles()
+  }
+
+  hoverMe (filename) {
+    console.log(filename, this)
+    // this.props.hover(filename)
   }
 
   render () {
@@ -34,7 +44,12 @@ export default class FileList extends Component {
           />
         }
         {this.props.files.map((f) =>
-          <File key={f.filename} exif={f.exif} filename={f.filename} hover={this.props.hover}/>
+          <File
+            key={f.filename}
+            exif={f.exif}
+            filename={f.filename}
+            onMouseEnter={this.hoverMe}
+            />
         )}
       </div>
     )

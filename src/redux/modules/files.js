@@ -1,5 +1,11 @@
 import request from 'superagent-bluebird-promise'
 
+const createAction = (type, payload) => {
+  return {
+    type, payload
+  }
+}
+
 // uploading a file
 export const FILE_UPLOAD_PENDING = 'FILE_UPLOAD_PENDING'
 export const FILE_UPLOAD_FULFILLED = 'FILE_UPLOAD_FULFILLED'
@@ -11,6 +17,8 @@ export const FILEQUEUE_LOAD_FULFILLED = 'FILEQUEUE_LOAD_FULFILLED'
 export const FILEQUEUE_LOAD_REJECTED = 'FILEQUEUE_LOAD_REJECTED'
 
 export const FILE_HOVER = 'FILE_HOVER'
+export const FILE_SELECTED = 'FILE_SELECTED'
+export const FILE_DESELECTED = 'FILE_DESELECTED'
 
 const initialState = {
   queue: [],
@@ -18,23 +26,11 @@ const initialState = {
   selected: []
 }
 
-export const loadQueue = function () {
-  return {
-    type: 'FILEQUEUE_LOAD',
-    payload: {
-      promise: request('/api/files').promise()
-    }
-  }
-}
+export const loadQueue = () => createAction('FILEQUEUE_LOAD', {promise: request('/api/files').promise()})
 
-export const hoverFile = function (filename) {
-  return {
-    type: FILE_HOVER,
-    payload: {
-      filename
-    }
-  }
-}
+export const hoverFile = (filename) => createAction(FILE_HOVER, {filename})
+export const selectFile = (filename) => createAction(FILE_SELECTED, {filename})
+export const deselectFile = (filename) => createAction(FILE_DESELECTED, {filename})
 
 export const uploadFiles = function (files) {
   let req = request.post('/api/upload')
@@ -51,6 +47,16 @@ export const uploadFiles = function (files) {
 
 export default function files (state = initialState, action) {
   switch (action.type) {
+    case FILE_SELECTED:
+      return {
+        ...state,
+        selected: [...state.selected, action.payload.filename]
+      }
+    case FILE_DESELECTED:
+      return {
+        ...state,
+        selected: [...state.selected, action.payload.filename]
+      }
     case FILE_HOVER:
       return {
         ...state,
