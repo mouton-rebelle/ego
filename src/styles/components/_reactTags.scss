@@ -21,6 +21,7 @@ div.ReactTags__tagInput input:focus {
 div.ReactTags__selected {
     float: left;
 }
+
 div.ReactTags__selected span.ReactTags__tag {
     border: 1px solid #ddd;
     background: #eee;
@@ -42,6 +43,8 @@ div.ReactTags__suggestions {
 }
 div.ReactTags__suggestions ul {
     list-style-type: none;
+    margin: 0;
+    padding: 0;
     box-shadow: .05em .01em .5em rgba(0,0,0,.2);
     background: white;
     width: 200px;
