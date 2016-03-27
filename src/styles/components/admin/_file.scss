@@ -5,7 +5,8 @@
   background-size: cover;
   margin: 20px 0 0 0;
   padding: 10px;
-  border: 2px solid #CCC;
+  border: 2px solid $brand-alt;
+  border-radius: 4px;
   display: flex;
   &__preview{
     flex:0 0 140px;
@@ -19,7 +20,7 @@
     flex-grow: 3;
   }
   &__exif{
-    flex-grow: 1;
+    flex: 0 0 280px;
     overflow: hidden;
   }
 }
