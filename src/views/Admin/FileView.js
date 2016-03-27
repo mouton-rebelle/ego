@@ -19,21 +19,15 @@ export class FileView extends React.Component {
   render () {
     return (
       <div className='container'>
-        <div className='row'>
-          <div className='col-60'>
-            <Uploader uploadFiles={this.props.uploadFiles}/>
-          </div>
-          <div className='col-40'>
-            <FileList
-              hovered={this.props.hovered}
-              files={this.props.queue}
-              hover={this.props.hoverFile}
-              select={this.props.selectFile}
-              deselect={this.props.deselectFile}
-              loadFiles={this.props.loadQueue}
-            />
-          </div>
-        </div>
+        <Uploader uploadFiles={this.props.uploadFiles}/>
+        <FileList
+          hovered={this.props.hovered}
+          files={this.props.queue}
+          hover={this.props.hoverFile}
+          select={this.props.selectFile}
+          deselect={this.props.deselectFile}
+          loadFiles={this.props.loadQueue}
+        />
       </div>
     )
   }
@@ -41,7 +35,6 @@ export class FileView extends React.Component {
 
 const mapStateToProps = (state) => {
   let filtered = _filter(state.files.queue, (f) => f.filename === state.files.hover)
-  console.log(filtered)
   return {
     queue: _map(state.files.queue),
     hovered: filtered.length === 1 ? filtered[0] : false

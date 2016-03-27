@@ -21,7 +21,7 @@ export default class FileList extends Component {
       return (<div>No files yet</div>)
     }
     return (
-      <div className='fileList' onClick={this.click}>
+      <div className='fileList'>
         {this.props.hovered && <ImageInfo
           placement='admin'
           tags={this.props.hovered.exif.tags}

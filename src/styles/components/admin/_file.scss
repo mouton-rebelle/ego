@@ -1,21 +1,25 @@
 .fileList{
-  display: flex;
-  flex-wrap: wrap;
 }
 .file{
-  flex-basis: 100px;
-  height: 100px;
   background-color: #EEE;
   background-size: cover;
-  margin:2px;
-  border:2px solid #666;
-  overflow: hidden;
-  opacity: 0.4;
-  &--selected{
-    opacity: 1
+  margin: 20px 0 0 0;
+  padding: 10px;
+  border: 2px solid #CCC;
+  display: flex;
+  &__preview{
+    flex:0 0 140px;
+    height: 140px;
+    background-size: cover;
+    margin:0 10px;
+    border: 1px solid #666;
+    border-radius: 4px
   }
-  &--hover, &:hover{
-    border:2px solid $brand-primary;
-    opacity: 1;
+  &__fields{
+    flex-grow: 3;
+  }
+  &__exif{
+    flex-grow: 1;
+    overflow: hidden;
   }
 }
