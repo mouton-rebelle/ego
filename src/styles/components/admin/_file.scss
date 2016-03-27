@@ -8,6 +8,14 @@
   background-color: #EEE;
   background-size: cover;
   margin:2px;
-  border:2px solid $brand-primary;
+  border:2px solid #666;
   overflow: hidden;
+  opacity: 0.4;
+  &--selected{
+    opacity: 1
+  }
+  &--hover, &:hover{
+    border:2px solid $brand-primary;
+    opacity: 1;
+  }
 }

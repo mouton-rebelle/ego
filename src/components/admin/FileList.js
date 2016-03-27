@@ -6,22 +6,14 @@ export default class FileList extends Component {
   static propTypes={
     files: PropTypes.array.isRequired,
     hover: PropTypes.func.isRequired,
+    select: PropTypes.func.isRequired,
+    deselect: PropTypes.func.isRequired,
     hovered: PropTypes.object.isRequired,
     loadFiles: PropTypes.func.isRequired
   };
 
-  constructor (props) {
-    super(props)
-    this.hoverMe = this.hoverMe.bind(this)
-  }
-
   componentWillMount () {
     this.props.loadFiles()
-  }
-
-  hoverMe (filename) {
-    console.log(filename, this)
-    // this.props.hover(filename)
   }
 
   render () {
@@ -29,7 +21,7 @@ export default class FileList extends Component {
       return (<div>No files yet</div>)
     }
     return (
-      <div className='fileList'>
+      <div className='fileList' onClick={this.click}>
         {this.props.hovered && <ImageInfo
           placement='admin'
           tags={this.props.hovered.exif.tags}
@@ -46,9 +38,10 @@ export default class FileList extends Component {
         {this.props.files.map((f) =>
           <File
             key={f.filename}
-            exif={f.exif}
-            filename={f.filename}
-            onMouseEnter={this.hoverMe}
+            file={f}
+            hover={this.props.hover}
+            select={this.props.select}
+            deselect={this.props.deselect}
             />
         )}
       </div>

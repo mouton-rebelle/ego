@@ -22,8 +22,7 @@ export const FILE_DESELECTED = 'FILE_DESELECTED'
 
 const initialState = {
   queue: [],
-  hover: '',
-  selected: []
+  hover: ''
 }
 
 export const loadQueue = () => createAction('FILEQUEUE_LOAD', {promise: request('/api/files').promise()})
@@ -48,32 +47,26 @@ export const uploadFiles = function (files) {
 export default function files (state = initialState, action) {
   switch (action.type) {
     case FILE_SELECTED:
-      return {
-        ...state,
-        selected: [...state.selected, action.payload.filename]
-      }
     case FILE_DESELECTED:
-      return {
-        ...state,
-        selected: [...state.selected, action.payload.filename]
-      }
+      const fna = action.payload.filename
+      let file = {...state.queue[fna], selected: action.type === FILE_SELECTED}
+      return {...state, queue: {...state.queue, [fna]: file}}
     case FILE_HOVER:
       return {
         ...state,
         hover: action.payload.filename
       }
     case FILE_UPLOAD_FULFILLED:
-      return {
-        ...state,
-        queue: [...state.queue, ...action.payload.body]
-      }
-
     case FILEQUEUE_LOAD_FULFILLED:
+      let newFiles = {}
+      action.payload.body.forEach((f) => {
+        newFiles[f.filename] = f
+        newFiles[f.filename].selected = false
+      })
       return {
         ...state,
-        queue: action.payload.body
+        queue: {...state.queue, ...newFiles}
       }
-
     default:
       return state
   }

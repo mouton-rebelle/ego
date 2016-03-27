@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
-import { uploadFiles, loadQueue, hoverFile } from 'redux/modules/files'
+import {map as _map, filter as _filter} from 'lodash'
+import { uploadFiles, loadQueue, hoverFile, selectFile, deselectFile } from 'redux/modules/files'
 import { connect } from 'react-redux'
 import Uploader from 'components/admin/Uploader'
 import FileList from 'components/admin/FileList'
@@ -9,6 +10,8 @@ export class FileView extends React.Component {
     uploadFiles: PropTypes.func.isRequired,
     loadQueue: PropTypes.func.isRequired,
     hoverFile: PropTypes.func.isRequired,
+    selectFile: PropTypes.func.isRequired,
+    deselectFile: PropTypes.func.isRequired,
     hovered: PropTypes.object.isRequired,
     queue: PropTypes.array.isRequired
   };
@@ -25,6 +28,8 @@ export class FileView extends React.Component {
               hovered={this.props.hovered}
               files={this.props.queue}
               hover={this.props.hoverFile}
+              select={this.props.selectFile}
+              deselect={this.props.deselectFile}
               loadFiles={this.props.loadQueue}
             />
           </div>
@@ -35,15 +40,17 @@ export class FileView extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  let filtered = state.files.queue.filter((f) => f.filename === state.files.hover)
+  let filtered = _filter(state.files.queue, (f) => f.filename === state.files.hover)
   console.log(filtered)
   return {
-    queue: state.files.queue,
+    queue: _map(state.files.queue),
     hovered: filtered.length === 1 ? filtered[0] : false
   }
 }
 export default connect((mapStateToProps), {
   uploadFiles,
   hoverFile,
+  selectFile,
+  deselectFile,
   loadQueue
 })(FileView)
