@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react'
-import { WithContext as ReactTags } from 'react-tag-input'
 import Field from '../Field'
 import Btn from '../Btn'
+import TagList from './TagList'
 import ImageInfo from '../ImageInfo'
 export default class File extends Component {
 
@@ -58,10 +58,7 @@ export default class File extends Component {
             <textarea></textarea>
           </Field>
           <Field label='Tags'>
-            <ReactTags tags={this.state.tags}
-              suggestions={this.state.suggestions}
-              handleDelete={this.tagDelete}
-              handleAddition={this.tagAddition} />
+            <TagList reference={`file##${this.props.file.filename}`} />
           </Field>
           <div className='form__action'>
             <Btn text='Delete uploaded file' handler={this.delete} />
