@@ -1,5 +1,6 @@
 .dropzone{
   min-height: 60px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -8,6 +9,7 @@
   border:1px dashed #CCC;
   &--active{
     border: 1px solid greenyellow;
+    cursor: copy;
   }
   &--rejected{
     border: 1px solid tomato;

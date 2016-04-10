@@ -194,3 +194,12 @@ export async function loadUploadedFiles () {
     }
   })
 }
+
+// remove a file in the upload directory. @todo better security
+export async function deleteFile (filename) {
+  if (filename.substr(0, 2) === '..') {
+    throw Error('nope')
+  }
+  await fs.remove(`${UPLOAD_DIR}/${filename}`)
+  return filename
+}

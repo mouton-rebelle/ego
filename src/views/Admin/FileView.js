@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import {map as _map, filter as _filter} from 'lodash'
-import { uploadFiles, loadQueue, hoverFile, selectFile, deselectFile } from 'redux/modules/files'
+import { uploadFiles, loadQueue, hoverFile, selectFile, deselectFile, deleteUploadedFile } from 'redux/modules/files'
 import { connect } from 'react-redux'
 import Uploader from 'components/admin/Uploader'
 import FileList from 'components/admin/FileList'
@@ -9,10 +9,10 @@ export class FileView extends React.Component {
   static propTypes = {
     uploadFiles: PropTypes.func.isRequired,
     loadQueue: PropTypes.func.isRequired,
+    deleteUploadedFile: PropTypes.func.isRequired,
     hoverFile: PropTypes.func.isRequired,
     selectFile: PropTypes.func.isRequired,
     deselectFile: PropTypes.func.isRequired,
-    hovered: PropTypes.object.isRequired,
     queue: PropTypes.array.isRequired
   };
 
@@ -21,11 +21,11 @@ export class FileView extends React.Component {
       <div className='container'>
         <Uploader uploadFiles={this.props.uploadFiles}/>
         <FileList
-          hovered={this.props.hovered}
           files={this.props.queue}
           hover={this.props.hoverFile}
           select={this.props.selectFile}
           deselect={this.props.deselectFile}
+          deleteUploadedFile={this.props.deleteUploadedFile}
           loadFiles={this.props.loadQueue}
         />
       </div>
@@ -43,6 +43,7 @@ const mapStateToProps = (state) => {
 export default connect((mapStateToProps), {
   uploadFiles,
   hoverFile,
+  deleteUploadedFile,
   selectFile,
   deselectFile,
   loadQueue
