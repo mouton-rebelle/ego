@@ -32,7 +32,6 @@ export default function tags (state = initialState, action) {
   switch (action.type) {
     case FILE_UPLOAD_FULFILLED:
     case FILEQUEUE_LOAD_FULFILLED:
-      console.log('jusqu')
       action.payload.body.forEach((f) => {
         state = {
           all: [...state.all, ...f.exif.tags],
@@ -48,6 +47,13 @@ export default function tags (state = initialState, action) {
       }
       return state
     case TAG_ADD_FOR_REF:
+      if (state.assignedToRef.hasOwnProperty(action.payload.ref) &&
+        state.assignedToRef[action.payload.ref].indexOf(action.payload.tag)!==-1) {
+        return state
+      }
+      if (state.all.indexOf(action.payload.tag) === -1) {
+        state.all = [...state.all, action.payload.tag]
+      }
       return {
         ...state,
         assignedToRef: {

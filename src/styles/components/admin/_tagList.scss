@@ -1,0 +1,52 @@
+.tagList{
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 11px;
+  &__tag{
+    background: $brand-alt;
+    color:#FFF;
+    padding: 2px 4px;
+    margin-right: 4px;
+  }
+}
+.react-autosuggest{
+  &__container {
+    flex: 2 0 100px;
+    position: relative;
+  }
+  &__container--open {
+  }
+  &__input {
+    position: relative;
+    z-index: 98;
+  }
+  &__suggestions-container {
+    z-index: 99;
+    position: absolute;
+    background: #FFF;
+    top: 12px;
+    left:0px;
+    right:0px;
+    border:1px solid $brand-alt;
+    border-top: none;
+    padding: 4px;
+  }
+  &__suggestion {
+    list-style: none;
+    padding: 4px;
+  }
+  &__suggestion--focused {
+    background-color: $brand-primary;
+    color: #FFF;
+  }
+  &__section-container {
+
+  }
+  &__section-title {
+
+  }
+  &__section-suggestions-container {
+
+  }
+}

@@ -1,34 +1,87 @@
 import React, {PropTypes, Component} from 'react'
 import {removeTagForRef, addTagForRef} from 'redux/modules/tags'
 import { connect } from 'react-redux'
+import Autosuggest from 'react-autosuggest'
+
+function getSuggestionValue (suggestion) {
+  return suggestion
+}
+function renderSuggestion (suggestion, {value}) {
+  let start = suggestion.indexOf(value)
+  let end = start + value.length
+
+  return (
+    <span>
+      {suggestion.substring(0, start)}
+      <strong>{suggestion.substring(start, end)}</strong>
+      {suggestion.substring(end)}
+    </span>
+  )
+}
+
 export class TagList extends Component {
   constructor (props) {
     super(props)
+    this.state = {
+      newTag: '',
+      suggestions: []
+    }
+    this.onTagChange = (event, { newValue }) => {
+      this.setState({
+        newTag: newValue
+      })
+    }
     this.removeTag = (t) => {
       return () => {
         this.props.removeTagForRef(t, this.props.reference)
       }
     }
     this.addTag = () => {
-      this.props.addTagForRef(this.refs.newTag.value, this.props.reference)
+      if (this.state.newTag) {
+        this.props.addTagForRef(this.state.newTag, this.props.reference)
+        this.setState({newTag: '', suggestions: []})
+      }
+    }
+    this.onTagInputKeyUp = (event) => {
+      if (event.keyCode === 13) {
+        this.addTag()
+      }
+    }
+    this.onSuggestionsUpdateRequested = ({value}) => {
+      this.setState({
+        suggestions: this.props.allTags.filter((t) => t.indexOf(value)!==-1)
+      })
     }
   }
   static propTypes={
     tags: PropTypes.array.isRequired,
+    allTags: PropTypes.array.isRequired,
     reference: PropTypes.string.isRequired,
     removeTagForRef: PropTypes.func.isRequired,
     addTagForRef: PropTypes.func.isRequired
   };
 
   render () {
+    const inputProps = {
+      placeholder: 'Type a tag',
+      value: this.state.newTag,
+      onChange: this.onTagChange,
+      onKeyUp: this.onTagInputKeyUp,
+      onBlur: this.addTag
+    }
+
     return (
       <div className='tagList'>
         {this.props.tags.map((t, pos) => {
           return (
-            <div className='tagList__tag' onClick={this.removeTag(t)}>{t}</div>
+            <div className='tagList__tag' key={t} onClick={this.removeTag(t)}>{t}</div>
           )
         })}
-        <input type='text' ref='newTag' onBlur={this.addTag}/>
+        <Autosuggest suggestions={this.state.suggestions}
+          onSuggestionsUpdateRequested={this.onSuggestionsUpdateRequested}
+          getSuggestionValue={getSuggestionValue}
+          renderSuggestion={renderSuggestion}
+          inputProps={inputProps} />
       </div>
     )
   }
@@ -38,10 +91,10 @@ const mapStateToProps = (state, ownProps) => {
   let tags = []
   if (state.tags.assignedToRef.hasOwnProperty(ownProps.reference)) {
     tags = state.tags.assignedToRef[ownProps.reference]
-    console.log(tags)
   }
   return {
-    tags
+    tags,
+    allTags: state.tags.all
   }
 }
 export default connect((mapStateToProps), {
