@@ -4,7 +4,7 @@ import asyncBusboy from 'async-busboy'
 import * as postsApi from './posts'
 import * as tagApi from './tag'
 import * as _ from 'lodash'
-import { processUploadedFile, loadUploadedFiles, deleteFile } from './file'
+import * as fileApi from './file'
 
 let router = new Router()
 
@@ -33,13 +33,13 @@ router.post('/api/comments', async function (ctx, next) {
 })
 
 router.get('/api/files', async function (ctx, next) {
-  const files = await loadUploadedFiles()
+  const files = await fileApi.loadUploadedFiles()
   ctx.type = 'application/json'
   ctx.body = JSON.stringify(files)
 })
 
 router.delete('/api/file/:filename', async function (ctx, next) {
-  const success = await deleteFile(ctx.params.filename)
+  const success = await fileApi.deleteFile(ctx.params.filename)
   ctx.type = 'application/json'
   ctx.body = JSON.stringify(success)
 })
@@ -48,7 +48,7 @@ router.post('/api/upload', async function (ctx, next) {
   const { files } = await asyncBusboy(ctx.req)
   const filesInfos = await Promise.all(
     files.map((uploadedFile) => {
-      return processUploadedFile(uploadedFile)
+      return fileApi.processUploadedFile(uploadedFile)
     })
   )
   ctx.type = 'application/json'
