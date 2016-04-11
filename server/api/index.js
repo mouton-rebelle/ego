@@ -2,10 +2,17 @@ import Router from 'koa-router'
 import * as commentsApi from './comments'
 import asyncBusboy from 'async-busboy'
 import * as postsApi from './posts'
+import * as tagApi from './tag'
 import * as _ from 'lodash'
 import { processUploadedFile, loadUploadedFiles, deleteFile } from './file'
 
 let router = new Router()
+
+router.get('/api/tags', async function (ctx, next) {
+  ctx.type = 'application/json'
+  let tags = await tagApi.all()
+  ctx.body = JSON.stringify(tags)
+})
 
 router.get('/api/comments/post/:id', async function (ctx, next) {
   ctx.type = 'application/json'

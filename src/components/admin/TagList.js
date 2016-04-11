@@ -1,5 +1,5 @@
 import React, {PropTypes, Component} from 'react'
-import {removeTagForRef, addTagForRef} from 'redux/modules/tags'
+import {removeTagForRef, addTagForRef, initTags} from 'redux/modules/tags'
 import { connect } from 'react-redux'
 import Autosuggest from 'react-autosuggest'
 
@@ -55,12 +55,17 @@ export class TagList extends Component {
   }
   static propTypes={
     tags: PropTypes.array.isRequired,
+    init: PropTypes.func.isRequired,
     allTags: PropTypes.array.isRequired,
     reference: PropTypes.string.isRequired,
     removeTagForRef: PropTypes.func.isRequired,
     addTagForRef: PropTypes.func.isRequired
   };
-
+  componentDidMount () {
+    if (this.props.tags.length < 40) {
+      this.props.init()
+    }
+  }
   render () {
     const inputProps = {
       placeholder: 'Type a tag',
@@ -99,5 +104,6 @@ const mapStateToProps = (state, ownProps) => {
 }
 export default connect((mapStateToProps), {
   removeTagForRef,
-  addTagForRef
+  addTagForRef,
+  init: initTags
 })(TagList)
