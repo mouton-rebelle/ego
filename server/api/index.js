@@ -5,6 +5,7 @@ import * as postsApi from './posts'
 import * as tagApi from './tag'
 import * as _ from 'lodash'
 import * as fileApi from './file'
+import * as imageApi from './image'
 
 let router = new Router()
 
@@ -12,6 +13,13 @@ router.get('/api/tags', async function (ctx, next) {
   ctx.type = 'application/json'
   let tags = await tagApi.all()
   ctx.body = JSON.stringify(tags)
+})
+
+router.post('/api/images', async function (ctx, next) {
+  ctx.type = 'application/json'
+  let {uploadedFilename, image} = ctx.params
+  await imageApi.createImage(uploadedFilename, image)
+  ctx.body = JSON.stringify(image)
 })
 
 router.get('/api/comments/post/:id', async function (ctx, next) {

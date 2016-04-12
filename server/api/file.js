@@ -7,6 +7,7 @@ const gm = gmBase.subClass({imageMagick: true})
 // probably make this config or params
 export const UPLOAD_DIR = './src/static/upload'
 export const THUMB_UPLOAD_DIR = './src/static/upload/thmb'
+export const SAVE_DIR = './src/static/orig'
 
 // exif metas we want
 const metas = {
@@ -46,6 +47,51 @@ const parseSpeed = (s) => {
   }
 }
 
+// formats nicely EV bias values (shitty exif norm)
+const parseBias = (bias) => {
+  if (bias.indexOf('/') !== -1) {
+    let [a, b] = bias.split('/')
+    let dir = '+'
+    if (a.substring(0, 1) === '-') {
+      a = a.substring(1)
+      dir = '-'
+    }
+    a = parseInt(a)
+    b = parseInt(b)
+    if (a === 0 || b === 0) {
+      return ''
+    } else if (a % b === 0) {
+      return `${dir}${a/b}`
+    } else {
+      if (b === 100) {
+        a = Math.floor(a/33.33333333)
+        b = 3
+      }
+      return `${dir}${a}/${b}`
+    }
+  } else {
+    return bias
+  }
+}
+
+/**
+ * Extract width & height data from file or stream
+ *
+ * @param {String} or {ReadableStream} [source]
+ * @return {object} extracted exif data
+ */
+export async function getSizePromise (source) {
+  return new Promise((resolve, reject) => {
+    gm(source).size((error, data) => {
+      if (error) {
+        reject(error)
+      } else {
+        resolve(data)
+      }
+    })
+  })
+}
+
 /**
  * Extract exif data from file or stream
  *
@@ -78,6 +124,9 @@ export async function getExifPromise (source) {
                 break
               case 'iso':
                 value = value * 1
+                break
+              case 'bias':
+                value = parseBias(value)
                 break
             }
             exif[key] = value
@@ -201,5 +250,19 @@ export async function deleteFile (filename) {
     throw Error('nope')
   }
   await fs.remove(`${UPLOAD_DIR}/${filename}`)
+  await fs.remove(`${THUMB_UPLOAD_DIR}/${filename}`)
   return filename
+}
+
+// move a file from the upload temp dir to the persisted files dir. @todo better security
+export async function persistUploadedFile (orig, dest = null) {
+  if (dest === null) {
+    dest = orig
+  }
+  if (orig.substr(0, 2) === '..') {
+    throw Error('nope')
+  }
+  await fs.move(`${UPLOAD_DIR}/${orig}`, `${SAVE_DIR}/${dest}`)
+  await fs.remove(`${THUMB_UPLOAD_DIR}/${orig}`)
+  return dest
 }

@@ -22,7 +22,6 @@ export default class FileList extends Component {
     }
     return (
       <div className='fileList'>
-
         {this.props.files.map((f) =>
           <File
             key={f.filename}
