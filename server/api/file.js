@@ -64,7 +64,7 @@ const parseBias = (bias) => {
       return `${dir}${a/b}`
     } else {
       if (b === 100) {
-        a = Math.floor(a/33.33333333)
+        a = Math.round(a/33.33333333)
         b = 3
       }
       return `${dir}${a}/${b}`
