@@ -16,16 +16,6 @@ export default class File extends Component {
 
   constructor (props) {
     super(props)
-    this.hover = () => {
-      this.props.hover(this.props.file.filename)
-    }
-    this.click = () => {
-      if (this.props.file.selected) {
-        this.props.deselect(this.props.file.filename)
-      } else {
-        this.props.select(this.props.file.filename)
-      }
-    }
     this.save = () => {
       console.log(this.refs.name.value)
     }
@@ -47,6 +37,10 @@ export default class File extends Component {
   }
 
   render () {
+    const tagReference = {
+      store: 'files',
+      id: this.props.file.filename
+    }
     return (
       <div className='file'>
         <div
@@ -55,10 +49,10 @@ export default class File extends Component {
             <input ref='name' defaultValue={this.props.file.filename} />
           </Field>
           <Field label='Description'>
-            <textarea></textarea>
+            <textarea ref='description'></textarea>
           </Field>
           <Field label='Tags'>
-            <TagList reference={`file##${this.props.file.filename}`} />
+            <TagList reference={tagReference} />
           </Field>
           <div className='form__action'>
             <Btn text='Delete uploaded file' handler={this.delete} />

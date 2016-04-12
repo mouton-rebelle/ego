@@ -57,7 +57,7 @@ export class TagList extends Component {
     tags: PropTypes.array.isRequired,
     init: PropTypes.func.isRequired,
     allTags: PropTypes.array.isRequired,
-    reference: PropTypes.string.isRequired,
+    reference: PropTypes.object.isRequired,
     removeTagForRef: PropTypes.func.isRequired,
     addTagForRef: PropTypes.func.isRequired
   };
@@ -94,8 +94,8 @@ export class TagList extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   let tags = []
-  if (state.tags.assignedToRef.hasOwnProperty(ownProps.reference)) {
-    tags = state.tags.assignedToRef[ownProps.reference]
+  if (ownProps.reference.store === 'files') {
+    tags = state.files.queue[ownProps.reference.id].exif.tags
   }
   return {
     tags,

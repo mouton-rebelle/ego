@@ -5,6 +5,7 @@ const createAction = (type, payload) => {
     type, payload
   }
 }
+import {TAG_ADD_FOR_REF, TAG_REMOVE_FOR_REF} from './tags'
 
 // uploading a file
 export const FILE_UPLOAD_PENDING = 'FILE_UPLOAD_PENDING'
@@ -72,6 +73,46 @@ export default function files (state = initialState, action) {
       return {
         ...state,
         hover: action.payload.filename
+      }
+    // THIS IS GETTING OUT OF HAND
+    case TAG_ADD_FOR_REF:
+      if (action.payload.ref.store !== 'files') {
+        return state
+      }
+      const id = action.payload.ref.id
+      return {
+        ...state,
+        queue: {
+          ...state.queue,
+          [id]: {
+            ...state.queue[id],
+            exif: {
+              ...state.queue[id].exif,
+              tags: [
+                ...state.queue[id].exif.tags,
+                action.payload.tag
+              ]
+            }
+          }
+        }
+      }
+    case TAG_REMOVE_FOR_REF:
+      if (action.payload.ref.store !== 'files') {
+        return state
+      }
+      const idr = action.payload.ref.id
+      return {
+        ...state,
+        queue: {
+          ...state.queue,
+          [idr]: {
+            ...state.queue[idr],
+            exif: {
+              ...state.queue[idr].exif,
+              tags: state.queue[idr].exif.tags.filter((t) => t !== action.payload.tag)
+            }
+          }
+        }
       }
     case FILE_UPLOAD_FULFILLED:
     case FILEQUEUE_LOAD_FULFILLED:

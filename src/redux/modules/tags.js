@@ -10,8 +10,7 @@ export const TAG_LOAD_FULFILLED = 'TAG_LOAD_FULFILLED'
 
 const initialState = {
   all: [],
-  loading: false,
-  assignedToRef: {}
+  loading: false
 }
 export const loadAllTags = () => {
   return {
@@ -60,7 +59,6 @@ export default function tags (state = initialState, action) {
         loading: true
       }
     case TAG_LOAD_FULFILLED:
-      console.log(action.payload)
       return {
         ...state,
         loading: false,
@@ -71,11 +69,7 @@ export default function tags (state = initialState, action) {
       action.payload.body.forEach((f) => {
         state = {
           ...state,
-          all: [...state.all, ...f.exif.tags],
-          assignedToRef: {
-            ...state.assignedToRef,
-            [`file##${f.filename}`]: f.exif.tags
-          }
+          all: [...state.all, ...f.exif.tags]
         }
       })
       state = {
@@ -84,29 +78,11 @@ export default function tags (state = initialState, action) {
       }
       return state
     case TAG_ADD_FOR_REF:
-      if (state.assignedToRef.hasOwnProperty(action.payload.ref) &&
-        state.assignedToRef[action.payload.ref].indexOf(action.payload.tag)!==-1) {
-        return state
-      }
       if (state.all.indexOf(action.payload.tag) === -1) {
         state.all = [...state.all, action.payload.tag]
       }
       return {
-        ...state,
-        assignedToRef: {
-          ...state.assignedToRef,
-          [action.payload.ref]: [...state.assignedToRef[action.payload.ref], action.payload.tag]
-        }
-      }
-    case TAG_REMOVE_FOR_REF:
-      const ref = action.payload.ref
-      const tag = action.payload.tag
-      return {
-        ...state,
-        assignedToRef: {
-          ...state.assignedToRef,
-          [ref]: state.assignedToRef[ref].filter((t) => t!==tag)
-        }
+        ...state
       }
     default:
       return state
