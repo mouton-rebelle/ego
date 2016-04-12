@@ -9,7 +9,7 @@ let db = {
 
 const maxPerPage = 30
 
-let listPostImageIds = function (post) {
+export let listPostImageIds = function (post) {
   if (!post.child) {
     return [post._id]
   } else {
@@ -38,7 +38,7 @@ let replaceImagesInPost = function (post, images, id) {
   return post
 }
 
-export const getById = async function(id) {
+export const getById = async function (id) {
   let post = await db.posts.findOne({_id: id})
   let ids = listPostImageIds(post)
   let images = await db.images.find({_id: {$in: ids}})
