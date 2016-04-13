@@ -1,5 +1,6 @@
 import * as _ from 'lodash'
 import Monk from 'monk'
+import {slugify} from './utils'
 
 let conn = Monk('localhost/ego')
 let db = {
@@ -9,7 +10,26 @@ let db = {
 
 const maxPerPage = 30
 
-export let listPostImageIds = function (post) {
+export async function getSlug (text, run = 0) {
+  let slug = slugify(text)
+  if (run > 0) {
+    slug =`${slug}-${run}`
+  }
+  let post = false
+  try {
+    post = await db.posts.find({slug: slug})
+  } catch (err) {
+    console.log(err)
+  }
+  if (post.length) {
+    console.log('------------')
+    return await getSlug(text, run+1)
+  } else {
+    return slug
+  }
+}
+
+export const listPostImageIds = function (post) {
   if (!post.child) {
     return [post._id]
   } else {
@@ -20,7 +40,7 @@ export let listPostImageIds = function (post) {
   }
 }
 
-let replaceImagesInPost = function (post, images, id) {
+const replaceImagesInPost = function (post, images, id) {
   if (!post) {
     return post
   }

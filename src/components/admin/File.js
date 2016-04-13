@@ -43,7 +43,7 @@ export default class File extends Component {
         <div
           className='file__fields'>
           <Field label='Name'>
-            <input ref='name' defaultValue={this.props.file.filename} />
+            <input ref='name' defaultValue={this.props.file.filename.replace(/.jpg/i, '')} />
           </Field>
           <Field label='Description'>
             <textarea ref='description'></textarea>
