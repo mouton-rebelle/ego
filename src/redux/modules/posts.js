@@ -11,9 +11,9 @@ export const POST_LOAD_PAGE_FULFILLED = 'POST_LOAD_PAGE_FULFILLED'
 export const POST_LOAD_PAGE_REJECTED = 'POST_LOAD_PAGE_REJECTED'
 
 // loading a single post
-export const POST_LOAD_BYID_PENDING = 'POST_LOAD_BYID_PENDING'
-export const POST_LOAD_BYID_FULFILLED = 'POST_LOAD_BYID_FULFILLED'
-export const POST_LOAD_BYID_REJECTED = 'POST_LOAD_BYID_REJECTED'
+export const POST_LOAD_BYSLUG_PENDING = 'POST_LOAD_BYSLUG_PENDING'
+export const POST_LOAD_BYSLUG_FULFILLED = 'POST_LOAD_BYSLUG_FULFILLED'
+export const POST_LOAD_BYSLUG_REJECTED = 'POST_LOAD_BYSLUG_REJECTED'
 
 // saving a comment
 export const COM_SAVE_PENDING = 'COM_SAVE_PENDING'
@@ -51,19 +51,19 @@ export const postLoadPage = (page: number, nbPerPage: number = 10): Action => {
   }
 }
 
-export const postLoadById = (id: string): Action => {
+export const postLoadBySlug = (slug: string): Action => {
   return {
-    type: 'POST_LOAD_BYID',
-    meta: {id},
+    type: 'POST_LOAD_BYSLUG',
+    meta: {slug},
     payload: {
-      promise: request(`/api/post/${id}`).promise()
+      promise: request(`/api/post/${slug}`).promise()
     }
   }
 }
 
 export const actions = {
   postLoadPage,
-  postLoadById
+  postLoadBySlug
 }
 // ------------------------------------
 // Reducer
@@ -71,7 +71,7 @@ export const actions = {
 const initialState = {
   count: 0,
   nbPages: 0,
-  byId: {},
+  bySlug: {},
   byPage: {},
   loadingPages: [],
   loadedPages: []
@@ -82,7 +82,8 @@ export default function posts (state = initialState, action) {
     case COM_SAVE_FULFILLED:
       let com = action.payload.body
       let postId = com.post
-      state.byId[postId].comments.push(com._id)
+      // TODO fix this with action meta ?
+      state.bySlug[postId].comments.push(com._id)
       return {...state}
 
     case POST_LOAD_PAGE_PENDING:
@@ -91,25 +92,25 @@ export default function posts (state = initialState, action) {
     case POST_LOAD_PAGE_FULFILLED:      // parses our header "posts 30-40/2000"
       let [, count] = action.payload.headers['content-range'].replace('posts ', '').split('/')
       let nbPerPage = action.meta.nbPerPage
-      let newPostsById = {}
+      let newPostsBySlug = {}
       let byPage = []
       action.payload.body.forEach((post) => {
-        newPostsById[post._id] = post
-        byPage.push(post._id)
+        newPostsBySlug[post.slug] = post
+        byPage.push(post.slug)
       })
       return {
         count: parseInt(count),
         loadedPages: [...state.loadedPages, action.meta.page],
         loadingPages: state.loadingPages.filter((p) => p!==action.meta.page),
         nbPages: parseInt(count / nbPerPage),
-        byId: {...state.byId, ...newPostsById},
+        bySlug: {...state.bySlug, ...newPostsBySlug},
         byPage: {...state.byPage, [action.meta.page]: byPage}
       }
 
-    case POST_LOAD_BYID_FULFILLED:
+    case POST_LOAD_BYSLUG_FULFILLED:
       let post = action.payload.body
-      state.byId[post._id] = post
-      return {...state, byId: {...state.byId}}
+      state.bySlug[post.slug] = post
+      return {...state, bySlug: {...state.bySlug}}
     default:
       return state
   }

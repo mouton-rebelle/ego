@@ -1,7 +1,7 @@
 import React, {PropTypes, Component} from 'react'
 import { connect } from 'react-redux'
 import { get as _get } from 'lodash'
-import { postLoadById } from 'redux/modules/posts'
+import { postLoadBySlug } from 'redux/modules/posts'
 import Post from 'components/Post'
 import PostDetail from 'components/PostDetail'
 
@@ -9,14 +9,14 @@ class SinglePostView extends Component {
 
   static propTypes={
     post: PropTypes.object,
-    postLoadById: PropTypes.func.isRequired,
+    postLoadBySlug: PropTypes.func.isRequired,
     imageId: PropTypes.string,
-    id: PropTypes.string.isRequired
+    slug: PropTypes.string.isRequired
   };
 
   componentWillMount () {
     if (!this.props.post) {
-      this.props.postLoadById(this.props.id)
+      this.props.postLoadBySlug(this.props.slug)
     }
   }
 
@@ -30,7 +30,7 @@ class SinglePostView extends Component {
         this.props.post ? (<PostDetail
           child={this.props.post.child}
           desc={this.props.post.desc}
-          id={this.props.post._id}
+          slug={this.props.post.slug}
           imageId={this.props.imageId}
           title={this.props.post.title}
           />) : null
@@ -38,8 +38,6 @@ class SinglePostView extends Component {
     } else {
       return (
         this.props.post ? (<Post
-          id={this.props.post._id}
-          key={this.props.post._id}
           post={this.props.post}
           />) : null
       )
@@ -48,9 +46,9 @@ class SinglePostView extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const post = _get(state.posts.byId, ownProps.params.postId)
+  const post = _get(state.posts.bySlug, ownProps.params.slug)
   const imageId = _get(ownProps.params, 'imageId')
-  return { post, imageId, id: ownProps.params.postId }
+  return { post, imageId, slug: ownProps.params.slug }
 }
 
-export default connect((mapStateToProps), { postLoadById })(SinglePostView)
+export default connect((mapStateToProps), { postLoadBySlug })(SinglePostView)

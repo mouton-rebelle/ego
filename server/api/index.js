@@ -28,9 +28,9 @@ router.get('/api/comments/post/:id', async function (ctx, next) {
   ctx.body = JSON.stringify(comments)
 })
 
-router.get('/api/post/:id', async function (ctx, next) {
+router.get('/api/post/:slug', async function (ctx, next) {
   ctx.type = 'application/json'
-  let post = await postsApi.getById(ctx.params.id)
+  let post = await postsApi.getBySlug(ctx.params.slug)
   ctx.body = JSON.stringify(post)
 })
 

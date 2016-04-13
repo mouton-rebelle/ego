@@ -25,7 +25,7 @@ export default class Post extends Component {
     child: PropTypes.array.isRequired,
     desc: PropTypes.string,
     horizontal: PropTypes.bool,
-    id: PropTypes.string.isRequired,
+    slug: PropTypes.string.isRequired,
     imageId: PropTypes.string,
     title: PropTypes.string.isRequired
   };
@@ -69,7 +69,7 @@ export default class Post extends Component {
    */
   updateImages (imageId) {
     this.images = flattenImages(this.props, [])
-    const postUrl = `/post/${this.props.id}`
+    const postUrl = `/post/${this.props.slug}`
     const currentImageIndex = _findIndex(this.images, {'_id': imageId})
     this.image = this.images[currentImageIndex]
 
@@ -95,8 +95,8 @@ export default class Post extends Component {
   }
 
   render () {
-    const {title, desc, id} = this.props
-    const postUrl = `/post/${id}`
+    const {title, desc, slug} = this.props
+    const postUrl = `/post/${slug}`
 
     const overlayStyle = {backgroundImage: `url(/orig/${this.image.file})`}
     return (

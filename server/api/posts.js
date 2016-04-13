@@ -40,7 +40,7 @@ export const listPostImageIds = function (post) {
   }
 }
 
-const replaceImagesInPost = function (post, images, id) {
+const replaceImagesInPost = function (post, images, slug) {
   if (!post) {
     return post
   }
@@ -48,10 +48,10 @@ const replaceImagesInPost = function (post, images, id) {
     post.image = images.filter(function (img) {
       return img._id + '' === post._id + ''
     })[0]
-    post.image.postUrl = `/post/${id}`
+    post.image.postUrl = `/post/${slug}`
   } else {
     post.child = post.child.map((p) => {
-      p = replaceImagesInPost(p, images, id)
+      p = replaceImagesInPost(p, images, slug)
       return p
     })
   }
@@ -62,7 +62,14 @@ export const getById = async function (id) {
   let post = await db.posts.findOne({_id: id})
   let ids = listPostImageIds(post)
   let images = await db.images.find({_id: {$in: ids}})
-  return replaceImagesInPost(post, images, id)
+  return replaceImagesInPost(post, images, post.slug)
+}
+
+export const getBySlug = async function (slug) {
+  let post = await db.posts.findOne({slug})
+  let ids = listPostImageIds(post)
+  let images = await db.images.find({_id: {$in: ids}})
+  return replaceImagesInPost(post, images, post.slug)
 }
 
 export const getByRange = async function (...range) {
@@ -86,7 +93,7 @@ export const getByRange = async function (...range) {
 
   // replace child images in posts
   posts = posts.map((post) => {
-    return replaceImagesInPost(post, images, post._id)
+    return replaceImagesInPost(post, images, post.slug)
   })
 
   return {

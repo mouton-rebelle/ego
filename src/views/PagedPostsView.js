@@ -44,7 +44,7 @@ export class PagedPostsView extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   const page = _get(ownProps.params, 'currentPage', 1) * 1
-  const posts = _get(state.posts.byPage, page, []).map((id) => state.posts.byId[id])
+  const posts = _get(state.posts.byPage, page, []).map((slug) => state.posts.bySlug[slug])
   const loaded = state.posts.loadedPages.indexOf(page) !== -1
   const loading = state.posts.loadingPages.indexOf(page) !== -1
   return {
