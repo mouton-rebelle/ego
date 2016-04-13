@@ -24,6 +24,7 @@ const Post = ({ post }) => {
     <section className='element'>
       <PostHeader dates={dates} desc={post.desc} kind='light' title={post.title}/>
       <PostTree child={post.child} horizontal={post.horizontal} />
+      <a href>View / add note [{post.comments.length}]</a>
     </section>
   )
 }

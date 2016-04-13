@@ -17,22 +17,19 @@ export default class File extends Component {
   constructor (props) {
     super(props)
     this.save = () => {
-      console.log(this.refs.name.value)
+      const image = {
+        label: this.refs.name.value,
+        description: this.refs.description.value,
+        ...this.props.file.exif
+      }
+      const data = {
+        uploadedFilename: this.props.file.filename,
+        image
+      }
+      this.props.createImage(data)
     }
     this.delete = () => {
       this.props.deleteUploadedFile(this.props.file.filename)
-    }
-    this.state = {
-      tags: this.props.file.exif.tags.map((t) => { return {id: t, text: t} }),
-      suggestions: ['gens:lili', 'gens:camille']
-    }
-    this.tagDelete = (indice) => {
-      let t = this.state.tags
-      t.splice(indice, 1)
-      this.setState({tags: t})
-    }
-    this.tagAddition = (tag) => {
-      this.setState({tags: [...this.state.tags, {id: tag, text: tag}]})
     }
   }
 
@@ -67,7 +64,7 @@ export default class File extends Component {
           <ImageInfo
             placement='admin'
             tags={this.props.file.exif.tags}
-            takenOn={this.props.file.exif.date}
+            takenOn={this.props.file.exif.takenOn}
             title={this.props.file.filename}
             description=''
             apn={this.props.file.exif.apn}

@@ -17,7 +17,7 @@ router.get('/api/tags', async function (ctx, next) {
 
 router.post('/api/images', async function (ctx, next) {
   ctx.type = 'application/json'
-  let {uploadedFilename, image} = ctx.params
+  let {uploadedFilename, image} = ctx.request.body
   await imageApi.createImage(uploadedFilename, image)
   ctx.body = JSON.stringify(image)
 })

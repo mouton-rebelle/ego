@@ -84,6 +84,7 @@ export default class Post extends Component {
     return {
       tags: image.tags,
       takenOn: image.takenOn,
+      apn: image.apn,
       title: image.label,
       description: image.desc,
       speed: image.speed,

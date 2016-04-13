@@ -13,4 +13,43 @@
     @extend %custom-font;
     margin-bottom: 4px;
   }
+  &__desc{
+    &--exif{
+      display: flex;
+      flex-wrap: wrap;
+      font-size: 13px;
+      justify-content: space-around;
+      max-width: 300px;
+      position: relative;
+      margin: 0 auto 10px auto;
+      @extend %custom-font;
+    }
+  }
+}
+
+.exif{
+  &:empty{
+    display: none;
+  }
+  border-radius: 3px;
+  overflow: hidden;
+  align-items: center;
+  border: 1px solid $darkest;
+  display: inline-flex;
+  &__label{
+    background: $mid-grey;
+    color: $darkest;
+    padding:2px 4px;
+    &--prefix{
+      border-right: 1px solid $darkest;
+    }
+    &--suffix{
+      border-left: 1px solid $darkest;
+    }
+  }
+  &__value{
+    background: $light-grey;
+    color: $brand-primary;
+    padding: 2px 4px;
+  }
 }

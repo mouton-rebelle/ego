@@ -21,7 +21,7 @@ export const COM_LOAD_RECENTS_REJECTED = 'COM_LOAD_RECENTS_REJECTED'
 
 const initialState = {
   recents: [],
-  byPost: {},
+  byId: {},
   shownForPost: [],
   saving: false
 }

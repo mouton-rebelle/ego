@@ -27,6 +27,7 @@ export class TagList extends Component {
       suggestions: []
     }
     this.onTagChange = (event, { newValue }) => {
+      newValue = newValue.replace(/[, ]/g, '')
       this.setState({
         newTag: newValue
       })
@@ -43,7 +44,7 @@ export class TagList extends Component {
       }
     }
     this.onTagInputKeyUp = (event) => {
-      if (event.keyCode === 13) {
+      if (event.keyCode === 13 || event.keyCode === 32 || event.keyCode === 188) {
         this.addTag()
       }
     }

@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react'
 import Tag from './Tag'
+import Exif from './Exif'
 import cx from 'classnames'
 import moment from 'moment'
 
@@ -19,8 +20,12 @@ export default class ImageInfo extends Component {
   }
 
   renderTag (t) {
+    let cat = ''
+    let name = t
     let temp = t.split(':')
-    let [cat, name] = temp
+    if (temp.length === 2) {
+      [cat, name] = temp
+    }
     let props = {category: cat, name: name}
     return <Tag key={t} {...props}/>
   }
@@ -33,11 +38,13 @@ export default class ImageInfo extends Component {
         <h4 className='imgInfo__title'>{title}</h4>
         <p className='imgInfo__desc' dangerouslySetInnerHTML={{__html: description}}/>
         <p className='imgInfo__desc'>{moment(takenOn).format('DD/MM/YYYY [@] HH:mm')}</p>
-        <p className='imgInfo__desc'>
-          {apn}&nbsp;
-          f{aperture}&nbsp;
-          {speed}s&nbsp;
-          iso: {iso} {bias}</p>
+        <p className='imgInfo__desc imgInfo__desc--exif'>
+          <Exif value={apn}/>
+          <Exif value={aperture} prefix='f'/>
+          <Exif value={speed} suffix='s'/>
+          <Exif value={iso} prefix='ISO'/>
+          <Exif value={bias} suffix='EV'/>
+        </p>
         {tags
             .sort((a, b) => a > b ? 1 : -1)
             .map((t) => this.renderTag(t))

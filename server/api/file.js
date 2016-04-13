@@ -11,7 +11,7 @@ export const SAVE_DIR = './src/static/orig'
 
 // exif metas we want
 const metas = {
-  date: '%[EXIF:DateTimeOriginal]',
+  takenOn: '%[EXIF:DateTimeOriginal]',
   tags: '%[IPTC:2:25]',
   aperture: '%[EXIF:ApertureValue]',
   speed: '%[EXIF:ShutterSpeedValue]',
@@ -110,7 +110,7 @@ export async function getExifPromise (source) {
           .forEach((kvString) => {
             let [key, value] = kvString.split('####')
             switch (key) {
-              case 'date':
+              case 'takenOn':
                 value = moment.utc(value, 'YYYY:MM:DD HH:mm:ss').toDate()
                 break
               case 'tags':

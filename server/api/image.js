@@ -1,5 +1,5 @@
 import Monk from 'monk'
-import {persistUploadedFile} from './file'
+import {persistUploadedFile, getSizePromise, UPLOAD_DIR} from './file'
 let conn = Monk('localhost/ego')
 let db = {
   images: conn.get('images'),
@@ -7,8 +7,13 @@ let db = {
 }
 
 export async function createImage (uploadedFilename, image) {
+  const size = await getSizePromise(`${UPLOAD_DIR}/${uploadedFilename}`)
   const filename = await persistUploadedFile(uploadedFilename)
-  image.file = filename
+  image = {
+    ...image,
+    ...size,
+    file: filename
+  }
   db.images.insert(image)
 }
 
