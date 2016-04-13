@@ -11,18 +11,13 @@
   }
   &__title{
     @extend %custom-font;
-    margin-bottom: 4px;
+    font-size: 24px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
   }
   &__desc{
     &--exif{
-      display: flex;
-      flex-wrap: wrap;
-      font-size: 13px;
-      justify-content: space-around;
-      max-width: 300px;
-      position: relative;
-      margin: 0 auto 10px auto;
-      @extend %custom-font;
+      text-align: center;
     }
   }
 }
@@ -31,6 +26,8 @@
   &:empty{
     display: none;
   }
+  font-size: 13px;
+  margin: 4px;
   border-radius: 3px;
   overflow: hidden;
   align-items: center;

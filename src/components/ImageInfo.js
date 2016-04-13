@@ -11,7 +11,7 @@ export default class ImageInfo extends Component {
     takenOn: PropTypes.string.isRequired,
     placement: PropTypes.string.isRequired, // TODO oneof ?
     title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
+    description: PropTypes.string,
     apn: PropTypes.string,
     speed: PropTypes.string.isRequired,
     aperture: PropTypes.number.isRequired,
@@ -36,8 +36,8 @@ export default class ImageInfo extends Component {
     return (
       <div className={classes}>
         <h4 className='imgInfo__title'>{title}</h4>
-        <p className='imgInfo__desc' dangerouslySetInnerHTML={{__html: description}}/>
-        <p className='imgInfo__desc'>{moment(takenOn).format('DD/MM/YYYY [@] HH:mm')}</p>
+        {description ? <p className='imgInfo__desc' dangerouslySetInnerHTML={{__html: description}}/> : null}
+        <p className='imgInfo__desc'>{moment(takenOn).format('dddd DD MMMM YYYY [-] HH[h]mm')}</p>
         <p className='imgInfo__desc imgInfo__desc--exif'>
           <Exif value={apn}/>
           <Exif value={aperture} prefix='f'/>
