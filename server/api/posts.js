@@ -40,22 +40,28 @@ export const listPostImageIds = function (post) {
   }
 }
 
-const replaceImagesInPost = function (post, images, slug) {
-  if (!post) {
-    return post
+const replaceImagesInPost = function (mesh, images, slug) {
+  if (!mesh) {
+    return mesh
   }
-  if (!post.child && post._id) {
-    post.image = images.filter(function (img) {
-      return img._id + '' === post._id + ''
-    })[0]
-    post.image.postUrl = `/post/${slug}`
+  // no more child, this is a leef, we need to find the image
+  if (!mesh.child && mesh._id) {
+    const imgId = mesh._id + ''
+    const matches = images.filter(function (img) {
+      return img._id + '' === imgId
+    })
+    if (matches.length === 1) {
+      mesh.image = matches[0]
+      mesh.image.postUrl = `/post/${slug}`
+    }
   } else {
-    post.child = post.child.map((p) => {
+    // still not a leef, we recurse
+    mesh.child = mesh.child.map((p) => {
       p = replaceImagesInPost(p, images, slug)
       return p
     })
   }
-  return post
+  return mesh
 }
 
 export const getById = async function (id) {
