@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 
 import PostHeader from './PostHeader'
 import PostTree from './PostTree'
+import CommentsContainer from 'containers/CommentsContainer'
 
 function flattenImages (c, images) {
   if (c.image) {
@@ -24,7 +25,7 @@ const Post = ({ post }) => {
     <section className='element'>
       <PostHeader dates={dates} desc={post.desc} kind='light' title={post.title}/>
       <PostTree child={post.child} horizontal={post.horizontal} />
-      <a href>View / add note [{post.comments.length}]</a>
+      <CommentsContainer postId={post._id} slug={post.slug}/>
     </section>
   )
 }

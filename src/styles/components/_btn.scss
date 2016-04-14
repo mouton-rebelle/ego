@@ -1,15 +1,32 @@
 .btn{
   @extend %custom-font;
   display: inline-block;
-  padding: 3px 7px;
+  padding: 5px 10px;
+  border: 1px solid $mid-grey;
   text-decoration: none;
+  font-size: 14px;
   text-transform: uppercase;
-  color: #FFF;
-  border-radius: 2;
-  border:0;
+  border-radius: 3px;
   letter-spacing: 0.06em;
-  background-color: $brand-primary;
-  &:hover{
-    background-color:#000
+  transition: all ease-in 0.3s;
+  &--primary{
+    color: #FFF;
+    border-color: $brand-primary;
+    background-color: $brand-primary;
+    &:hover{
+      border-color: $darkest;
+      background-color:$darkest
+    }
+  }
+  &--alt{
+    color: $brand-alt;
+    background-color: $light-grey;
+    &:hover{
+      border-color: $darkest;
+      background-color: $darkest;
+    }
+  }
+  &:focus, &:active{
+    outline: none;
   }
 }

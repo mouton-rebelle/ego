@@ -22,33 +22,34 @@ export const COM_LOAD_RECENTS_REJECTED = 'COM_LOAD_RECENTS_REJECTED'
 const initialState = {
   recents: [],
   byId: {},
-  shownForPost: [],
-  saving: false
+  statusForPost: {},
+  shownForPost: {}
 }
 
-export const showCommentsForPost = function (postId) {
+export const showForPost = function (slug) {
   return {
     type: COM_SHOW_BYPOST,
     payload: {
-      postId: postId
+      slug
     }
   }
 }
 
-export const hideCommentsForPost = function (postId) {
+export const hideForPost = function (slug) {
   return {
     type: COM_HIDE_BYPOST,
     payload: {
-      postId: postId
+      slug
     }
   }
 }
 
-export const getCommentsForPost = function (postId) {
+export const loadForPost = function (postId, slug) {
   return {
     type: 'COM_LOAD_BYPOST',
     meta: {
-      postId: postId
+      postId,
+      slug
     },
     payload: {
       promise: request(`/api/comments/post/${postId}`).promise()
@@ -56,45 +57,85 @@ export const getCommentsForPost = function (postId) {
   }
 }
 
-export const saveComment = function (comment) {
+export const save = function (comment, slug) {
   return {
     types: 'COM_SAVE',
+    meta: {
+      postId: comment.postId,
+      slug
+    },
     payload: {
       promise: request.post('/api/comments').send(comment).promise()
     }
   }
 }
 
+export const actions = {
+  save,
+  loadForPost,
+  hideForPost,
+  showForPost
+}
+
 export default function comments (state = initialState, action) {
   switch (action.type) {
     case COM_SHOW_BYPOST:
-      state.shownForPost = [...state.shownForPost, action.payload.postId]
-      return state
+      return {
+        ...state,
+        shownForPost: {
+          ...state.shownForPost,
+          [action.payload.slug]: true
+        }
+      }
 
     case COM_HIDE_BYPOST:
-      state.shownForPost = state.shownForPost.filter((p) => p !== action.payload.postId)
-      return state
+      return {
+        ...state,
+        shownForPost: {
+          ...state.shownForPost,
+          [action.payload.slug]: false
+        }
+      }
 
     case COM_SAVE_PENDING:
-      return {...state, saving: true}
+      return {
+        ...state,
+        statusForPost: {
+          ...state.statusForPost,
+          [action.meta.slug]: 'SAVING'
+        }
+      }
 
     case COM_SAVE_FULFILLED:
       let com = action.payload.body
-      let postId = com.post
       return {
-        saving: false,
-        shownForPost: state.shownForPost,
-        byPost: {
-          ...state.byPost,
-          [postId]: [...state.byPost[postId], com]
+        ...state,
+        statusForPost: {
+          ...state.statusForPost,
+          [action.meta.slug]: 'LOADED'
+        },
+        byId: {
+          ...state.byId,
+          [com._id]: com
         },
         recents: [...state.recents, com]
       }
 
-    case COM_LOAD_BYPOST_FULFILLED:      // parses our header "posts 30-40/2000"
-      return {...state,
-          byPost: {...state.byPost,
-            [action.meta.postId]: action.payload.body}
+    case COM_LOAD_BYPOST_FULFILLED:
+      let loadedComs = {}
+      action.payload.body.forEach((com) => {
+        loadedComs[com._id] = com
+      })
+      return {
+        ...state,
+        statusForPost: {
+          ...state.statusForPost,
+          [action.meta.slug]: 'LOADED'
+        },
+        byId: {
+          ...state.byId,
+          ...loadedComs
+        }
       }
 
     default:

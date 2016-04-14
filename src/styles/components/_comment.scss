@@ -1,0 +1,50 @@
+.comContainer{
+  text-align: center;
+  margin-top: 15px;
+}
+
+.com{
+  margin: 15px 0;
+  padding: 15px 0;
+  background: $almost-white;
+  border-radius: 6px;
+  text-align: left;
+  border: 1px solid $light-grey;
+  &__text{
+    padding: 0 15px;
+    font-size: 20px;
+    line-height: 1.4em;
+    color: #777;
+  }
+  &__meta{
+    padding: 10px 15px 0 15px;
+    margin-top: 10px;
+    border-top: 1px solid $light-grey;
+    &__author{
+      @extend %custom-font;
+      font-size: 13px;
+      padding:0.7em;
+      color: $brand-primary;
+    }
+    &__date{
+      padding:0.7em;
+      font-size: 13px;
+    }
+  }
+}
+
+.com-form{
+  @extend .com;
+  &__input{
+    margin: 0 15px 15px 15px;
+    padding: 10px;
+    display: block;
+    width: calc(100% - 30px);
+    border: 1px solid $mid-grey;
+    border-radius: 3px
+  }
+  &__action{
+    text-align: right;
+    margin:0 15px
+  }
+}
