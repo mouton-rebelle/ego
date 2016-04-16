@@ -1,12 +1,11 @@
 import React, { PropTypes, Component } from 'react'
 import ReactDOM from 'react-dom'
-import { Link } from 'react-router'
 import { debounce } from 'lodash'
-
 export default class PostImage extends Component {
 
   static propTypes = {
-    image: PropTypes.object.isRequired
+    image: PropTypes.object.isRequired,
+    showOverlay: PropTypes.func.isRequired
   };
 
   constructor (props, context) {
@@ -15,6 +14,10 @@ export default class PostImage extends Component {
       imageVisible: false,
       imageLoaded: false,
       width: 0
+    }
+
+    this.showOverlay = () => {
+      this.props.showOverlay(this.props.image)
     }
 
     this.updateViewport = debounce(() => {
@@ -88,7 +91,7 @@ export default class PostImage extends Component {
     const display = this.state.imageLoaded ? 'inline-block' : 'none'
 
     return (
-      <Link className='image image--border' style={computedStyles} to={`${image.postUrl}/${image._id}`}>
+      <a className='image image--border' style={computedStyles} onClick={this.showOverlay}>
         {
           this.state.imageVisible
           ? (<img
@@ -98,7 +101,7 @@ export default class PostImage extends Component {
             onLoad={this.onLoad} src={`/orig/${image.file}`} />)
           : null
         }
-      </Link>
+      </a>
     )
   }
 }

@@ -17,20 +17,21 @@ function flattenImages (c, images) {
   }
 }
 
-const Post = ({ post }) => {
+const Post = ({ post, showOverlay }) => {
   const images = flattenImages(post, [])
   const dates = images.map((img) => img.takenOn).sort((a, b) => a > b ? 1 : -1)
 
   return (
     <section className='element'>
       <PostHeader dates={dates} desc={post.desc} kind='light' title={post.title}/>
-      <PostTree child={post.child} horizontal={post.horizontal} />
+      <PostTree child={post.child} horizontal={post.horizontal} showOverlay={showOverlay}/>
       <CommentsContainer postId={post._id} slug={post.slug}/>
     </section>
   )
 }
 Post.propTypes = {
-  post: PropTypes.object.isRequired
+  post: PropTypes.object.isRequired,
+  showOverlay: PropTypes.func.isRequired
 }
 
 export default Post

@@ -3,7 +3,20 @@ import request from 'superagent-bluebird-promise'
 const initialState = {
   byId: {
   },
-  loading: false
+  loading: false,
+  overlay: {
+    shown: false,
+    post: null,
+    image: null,
+    next: {
+      image: null,
+      post: null
+    },
+    prev: {
+      image: null,
+      post: null
+    }
+  }
 }
 
 // ------------------------------------
@@ -22,17 +35,58 @@ export const IMAGE_UPDATE_PENDING = 'IMAGE_UPDATE_PENDING'
 export const IMAGE_UPDATE_FULFILLED = 'IMAGE_UPDATE_FULFILLED'
 export const IMAGE_UPDATE_REJECTED = 'IMAGE_UPDATE_REJECTED'
 
+export const IMAGE_OVERLAY_SHOW = 'IMAGE_OVERLAY_SHOW'
+export const IMAGE_OVERLAY_HIDE = 'IMAGE_OVERLAY_HIDE'
+
+export const IMAGE_OVERLAY_NEXT = 'IMAGE_OVERLAY_NEXT'
+export const IMAGE_OVERLAY_PREV = 'IMAGE_OVERLAY_PREV'
+
 export const createImage = (image) => {
   return {
-    action: 'IMAGE_CREATE',
+    type: 'IMAGE_CREATE',
     payload: {
       promise: request.post('/api/images').send(image).promise()
     }
   }
 }
 
+export const showOverlay = (image) => {
+  return {
+    type: IMAGE_OVERLAY_SHOW,
+    payload: image
+  }
+}
+export const closeOverlay = () => {
+  return {
+    type: IMAGE_OVERLAY_HIDE,
+    payload: null
+  }
+}
+export const actions = {
+  createImage,
+  showOverlay,
+  closeOverlay
+}
+
 export default function images (state = initialState, action) {
   switch (action.type) {
+    case IMAGE_OVERLAY_SHOW:
+      return {
+        ...state,
+        overlay: {
+          ...state.overlay,
+          image: action.payload,
+          shown: true
+        }
+      }
+    case IMAGE_OVERLAY_HIDE:
+      return {
+        ...state,
+        overlay: {
+          ...state.overlay,
+          shown: false
+        }
+      }
     case IMAGE_LOAD_PENDING:
       return {...state, loading: true}
     case IMAGE_LOAD_FULFILLED:

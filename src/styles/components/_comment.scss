@@ -41,7 +41,11 @@
     display: block;
     width: calc(100% - 30px);
     border: 1px solid $mid-grey;
-    border-radius: 3px
+    border-radius: 3px;
+    &:focus{
+      outline: none;
+      border-color: $dark-grey;
+    }
   }
   &__action{
     text-align: right;

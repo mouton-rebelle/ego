@@ -52,7 +52,7 @@ const replaceImagesInPost = function (mesh, images, slug) {
     })
     if (matches.length === 1) {
       mesh.image = matches[0]
-      mesh.image.postUrl = `/post/${slug}`
+      mesh.image.postSlug = slug
     }
   } else {
     // still not a leef, we recurse
