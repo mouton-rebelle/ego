@@ -1,5 +1,5 @@
 import request from 'superagent-bluebird-promise'
-
+import {forEach as _forEach} from 'lodash'
 const initialState = {
   byId: {
   },
@@ -8,14 +8,8 @@ const initialState = {
     shown: false,
     post: null,
     image: null,
-    next: {
-      image: null,
-      post: null
-    },
-    prev: {
-      image: null,
-      post: null
-    }
+    next: null,
+    prev: null
   }
 }
 
@@ -35,11 +29,25 @@ export const IMAGE_UPDATE_PENDING = 'IMAGE_UPDATE_PENDING'
 export const IMAGE_UPDATE_FULFILLED = 'IMAGE_UPDATE_FULFILLED'
 export const IMAGE_UPDATE_REJECTED = 'IMAGE_UPDATE_REJECTED'
 
+export const IMAGE_PREPARE_OVERLAY = 'IMAGE_PREPARE_OVERLAY'
 export const IMAGE_OVERLAY_SHOW = 'IMAGE_OVERLAY_SHOW'
 export const IMAGE_OVERLAY_HIDE = 'IMAGE_OVERLAY_HIDE'
 
 export const IMAGE_OVERLAY_NEXT = 'IMAGE_OVERLAY_NEXT'
 export const IMAGE_OVERLAY_PREV = 'IMAGE_OVERLAY_PREV'
+
+function flattenImages (c, images) {
+  if (c.image) {
+    images.push(c.image)
+    return images
+  } else {
+    if (!c.child) {
+      return null
+    }
+    c.child.forEach((child) => flattenImages(child, images))
+    return images
+  }
+}
 
 export const createImage = (image) => {
   return {
@@ -50,10 +58,52 @@ export const createImage = (image) => {
   }
 }
 
-export const showOverlay = (image) => {
+// prepare the correct data to show overlay, by computing prev & next img
+export const prepareOverlay = (image) => {
+  return (dispatch, getState) => {
+    const state = getState()
+    const post = state.posts.bySlug[image.postSlug]
+    let prevPost = post
+    let nextPost = post
+    _forEach(state.posts.byPage, (postsIds) => {
+      let count = postsIds.length
+      let pos = postsIds.indexOf(post.slug)
+      if (pos!==-1) {
+        prevPost = state.posts.bySlug[postsIds[pos > 0 ? (pos - 1) : (count - 1)]]
+        nextPost = state.posts.bySlug[postsIds[pos < (count - 1) ? (pos + 1) : 0]]
+      }
+    })
+    const postImages = flattenImages(post, [])
+    const imagePos = postImages.indexOf(image)
+    const countImg = postImages.length
+    let prevImg = image
+    let nextImg = image
+    if (imagePos === 0) {
+      const newImages = flattenImages(prevPost, [])
+      prevImg = newImages[newImages.length - 1]
+    } else {
+      prevImg = postImages[imagePos - 1]
+    }
+
+    if (imagePos === countImg - 1) {
+      const newImages = flattenImages(nextPost, [])
+      nextImg = newImages[0]
+    } else {
+      nextImg = postImages[imagePos + 1]
+    }
+    dispatch(showOverlay(image, post, prevImg, nextImg))
+  }
+}
+
+export const showOverlay = (image, post, prev, next) => {
   return {
     type: IMAGE_OVERLAY_SHOW,
-    payload: image
+    payload: {
+      image,
+      post,
+      prev,
+      next
+    }
   }
 }
 export const closeOverlay = () => {
@@ -65,6 +115,7 @@ export const closeOverlay = () => {
 export const actions = {
   createImage,
   showOverlay,
+  prepareOverlay,
   closeOverlay
 }
 
@@ -75,7 +126,9 @@ export default function images (state = initialState, action) {
         ...state,
         overlay: {
           ...state.overlay,
-          image: action.payload,
+          image: action.payload.image,
+          next: action.payload.next,
+          prev: action.payload.prev,
           shown: true
         }
       }
