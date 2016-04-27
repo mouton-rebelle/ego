@@ -14,5 +14,14 @@
   &--shown{
     opacity: 1;
     pointer-events: all;
+    &.overlay--withHUD .overlay__hud{
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
+  &__hud{
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity ease-in 0.3s;
   }
 }

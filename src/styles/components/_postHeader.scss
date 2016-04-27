@@ -12,10 +12,12 @@
       font-size: 1.5em;
       line-height: 1em;
       text-transform: uppercase;
+      margin-top: 0;
       margin-bottom: 0.1em;
       color: $brand-alt;
       &--dark{
         color: $brand-primary;
+
       }
     }
     &__desc{
@@ -29,8 +31,13 @@
   &__date{
     flex:1 0 100px;
   }
+  &__additional{
+    .btn{
+      margin-left: 5px;
+    }
+  }
   &--dark{
-    background:rgba(0,0,0,0.8);
+    background:rgba(0,0,0,1);
     padding:2%;
   }
 }

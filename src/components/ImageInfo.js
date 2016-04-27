@@ -10,8 +10,8 @@ export default class ImageInfo extends Component {
     tags: PropTypes.array.isRequired,
     takenOn: PropTypes.string.isRequired,
     placement: PropTypes.string.isRequired, // TODO oneof ?
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string,
+    label: PropTypes.string.isRequired,
+    desc: PropTypes.string,
     apn: PropTypes.string,
     speed: PropTypes.string.isRequired,
     aperture: PropTypes.number.isRequired,
@@ -31,12 +31,12 @@ export default class ImageInfo extends Component {
   }
 
   render () {
-    const {placement = 'bottom', tags, takenOn, title, description, speed, aperture, iso, bias, apn} = this.props
+    const {placement = 'bottom', tags, takenOn, label, desc, speed, aperture, iso, bias, apn} = this.props
     const classes = cx('imgInfo', `imgInfo--${placement}`)
     return (
       <div className={classes}>
-        <h4 className='imgInfo__title'>{title}</h4>
-        {description ? <p className='imgInfo__desc' dangerouslySetInnerHTML={{__html: description}}/> : null}
+        <h4 className='imgInfo__title'>{label}</h4>
+        {desc ? <p className='imgInfo__desc' dangerouslySetInnerHTML={{__html: desc}}/> : null}
         <p className='imgInfo__desc'>{moment(takenOn).format('dddd DD MMMM YYYY [-] HH[h]mm')}</p>
         <p className='imgInfo__desc imgInfo__desc--exif'>
           <Exif value={apn}/>

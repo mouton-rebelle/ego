@@ -7,6 +7,7 @@ const initialState = {
   overlay: {
     shown: false,
     post: null,
+    hud: true,
     image: null,
     next: null,
     prev: null
@@ -35,6 +36,7 @@ export const IMAGE_OVERLAY_HIDE = 'IMAGE_OVERLAY_HIDE'
 
 export const IMAGE_OVERLAY_NEXT = 'IMAGE_OVERLAY_NEXT'
 export const IMAGE_OVERLAY_PREV = 'IMAGE_OVERLAY_PREV'
+export const IMAGE_OVERLAY_HUD_TOGGLE = 'IMAGE_OVERLAY_HUD_TOGGLE'
 
 function flattenImages (c, images) {
   if (c.image) {
@@ -94,7 +96,12 @@ export const prepareOverlay = (image) => {
     dispatch(showOverlay(image, post, prevImg, nextImg))
   }
 }
-
+export const toggleHud = () => {
+  return {
+    type: IMAGE_OVERLAY_HUD_TOGGLE,
+    payload: {}
+  }
+}
 export const showOverlay = (image, post, prev, next) => {
   return {
     type: IMAGE_OVERLAY_SHOW,
@@ -116,11 +123,20 @@ export const actions = {
   createImage,
   showOverlay,
   prepareOverlay,
+  toggleHud,
   closeOverlay
 }
 
 export default function images (state = initialState, action) {
   switch (action.type) {
+    case IMAGE_OVERLAY_HUD_TOGGLE:
+      return {
+        ...state,
+        overlay: {
+          ...state.overlay,
+          hud: !state.overlay.hud
+        }
+      }
     case IMAGE_OVERLAY_SHOW:
       return {
         ...state,
@@ -129,6 +145,7 @@ export default function images (state = initialState, action) {
           image: action.payload.image,
           next: action.payload.next,
           prev: action.payload.prev,
+          post: action.payload.post,
           shown: true
         }
       }

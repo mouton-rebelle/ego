@@ -1,7 +1,7 @@
 .btn{
   @extend %custom-font;
   display: inline-block;
-  padding: 5px 10px;
+  padding: 0.3em 0.6em;
   border: 1px solid $mid-grey;
   text-decoration: none;
   font-size: 14px;
@@ -24,6 +24,16 @@
     &:hover{
       border-color: $darkest;
       background-color: $darkest;
+    }
+  }
+  &--hud{
+    background: none;
+    font-size: 11px;
+    color: rgba(#FFF,0.6);
+    border-color: rgba(#FFF,0.14);
+    &:hover{
+      color: rgba(#FFF,0.9);
+      border-color: rgba(#FFF,0.6);
     }
   }
   &:focus, &:active{

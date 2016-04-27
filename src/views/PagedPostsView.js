@@ -7,9 +7,6 @@ import PostsList from 'components/PostsList'
 import { postLoadPage } from 'redux/modules/posts'
 import { actions } from 'redux/modules/images'
 
-// We avoid using the `@connect` decorator on the class definition so
-// that we can export the undecorated component for testing.
-// See: http://rackt.github.io/redux/docs/recipes/WritingTests.html
 export class PagedPostsView extends React.Component {
   static propTypes = {
     currentPage: PropTypes.number.isRequired,
@@ -18,10 +15,13 @@ export class PagedPostsView extends React.Component {
     posts: PropTypes.array.isRequired,
     prepareOverlay: PropTypes.func.isRequired,
     closeOverlay: PropTypes.func.isRequired,
+    overlayHasHUD: PropTypes.bool.isRequired,
+    toggleHud: PropTypes.func.isRequired,
     loaded: PropTypes.bool.isRequired,
     loading: PropTypes.bool.isRequired,
     overlayShown: PropTypes.bool.isRequired,
     overlayImage: PropTypes.object,
+    overlayPost: PropTypes.object,
     overlayPrev: PropTypes.object,
     overlayNext: PropTypes.object
   };
@@ -32,15 +32,19 @@ export class PagedPostsView extends React.Component {
       if (this.props.overlayShown === false) {
         return
       }
+      evt.preventDefault()
       switch (evt.keyCode) {
-        case 32:
-          this.setState({hud: !this.state.hud})
+        case 32: // [space]
+          this.props.toggleHud()
           break
-        case 37:
+        case 37: // <-
           this.props.prepareOverlay(this.props.overlayPrev)
           break
-        case 39:
+        case 39: // ->
           this.props.prepareOverlay(this.props.overlayNext)
+          break
+        case 27: // echap
+          this.props.closeOverlay()
           break
       }
     }
@@ -70,7 +74,13 @@ export class PagedPostsView extends React.Component {
   render () {
     return (
       <div className='container'>
-        <ImageOverlay image={this.props.overlayImage} shown={this.props.overlayShown} close={this.props.closeOverlay}/>
+        <ImageOverlay
+          image={this.props.overlayImage}
+          post={this.props.overlayPost}
+          shown={this.props.overlayShown}
+          close={this.props.closeOverlay}
+          toggleHud={this.props.toggleHud}
+          hud={this.props.overlayHasHUD}/>
         <Pager basePath='/page/' currentPage={this.props.currentPage} nbPages={this.props.nbPages}/>
         <PostsList posts={this.props.posts} showOverlay={this.props.prepareOverlay} />
         <Pager basePath='/page/' currentPage={this.props.currentPage} nbPages={this.props.nbPages}/>
@@ -86,16 +96,20 @@ const mapStateToProps = (state, ownProps) => {
   const loading = state.posts.loadingPages.indexOf(page) !== -1
   const overlayShown = state.images.overlay.shown
   const overlayImage = state.images.overlay.image
+  const overlayPost = state.images.overlay.post
   const overlayNext = state.images.overlay.next
   const overlayPrev = state.images.overlay.prev
+  const overlayHasHUD = state.images.overlay.hud
   return {
     nbPages: state.posts.nbPages,
     currentPage: page,
     posts,
     loaded,
     loading,
+    overlayHasHUD,
     overlayShown,
     overlayImage,
+    overlayPost,
     overlayPrev,
     overlayNext
   }

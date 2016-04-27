@@ -8,7 +8,7 @@ export default class Btn extends Component {
     handler: PropTypes.func,
     text: PropTypes.string.isRequired,
     url: PropTypes.string,
-    variant: PropTypes.oneOf(['primary', 'alt'])
+    variant: PropTypes.oneOf(['primary', 'alt', 'hud'])
   };
 
   render () {
