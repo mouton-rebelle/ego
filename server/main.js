@@ -16,12 +16,17 @@ const debug = _debug('app:server')
 const paths = config.utils_paths
 const app = new Koa()
 
-// This rewrites all routes requests to the root /index.h tml file
-// (ignoring file requests). If you want to implement isomorphic
-// rendering, you'll want to remove this middleware.
 app
+  .use(bodyParser({
+    onerror: function (err, ctx) {
+      console.log(err)
+      ctx.throw('body parse error', 422)
+    }
+  }))
   .use(api.routes())
-  .use(bodyParser())
+  // This rewrites all routes requests to the root /index.html file
+  // (ignoring file requests). If you want to implement isomorphic
+  // rendering, you'll want to remove this middleware.
   .use(convert(historyApiFallback({
     verbose: false
   })))

@@ -59,9 +59,9 @@ export const loadForPost = function (postId, slug) {
 
 export const save = function (comment, slug) {
   return {
-    types: 'COM_SAVE',
+    type: 'COM_SAVE',
     meta: {
-      postId: comment.postId,
+      postId: comment.post,
       slug
     },
     payload: {

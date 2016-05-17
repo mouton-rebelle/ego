@@ -11,8 +11,9 @@ export const getByPostId = async function (id) {
 }
 
 export const save = async function (comment) {
-  comment.post = db.posts.id(comment.post)
+  comment.post = await db.posts.id(comment.post)
   comment.when = new Date()
+  console.log(comment)
   await db.comments.insert(comment)
   await db.posts.updateById(comment.post,
     {

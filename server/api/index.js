@@ -36,6 +36,8 @@ router.get('/api/post/:slug', async function (ctx, next) {
 
 router.post('/api/comments', async function (ctx, next) {
   ctx.type = 'application/json'
+  console.log('posted')
+  console.log(ctx.request.body)
   let comment = await commentsApi.save(ctx.request.body)
   ctx.body = JSON.stringify(comment)
 })

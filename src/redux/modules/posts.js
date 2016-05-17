@@ -81,9 +81,7 @@ export default function posts (state = initialState, action) {
   switch (action.type) {
     case COM_SAVE_FULFILLED:
       let com = action.payload.body
-      let postId = com.post
-      // TODO fix this with action meta ?
-      state.bySlug[postId].comments.push(com._id)
+      state.bySlug[action.meta.slug].comments.push(com._id)
       return {...state}
 
     case POST_LOAD_PAGE_PENDING:

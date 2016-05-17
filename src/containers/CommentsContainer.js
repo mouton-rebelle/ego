@@ -26,7 +26,7 @@ export class CommentsContainer extends Component {
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
 
     this.save = (comment) => {
-      comment.postId = this.props.postId
+      comment.post = this.props.postId
       this.props.save(comment, this.props.slug)
     }
     this.toggleVisibility = () => {
