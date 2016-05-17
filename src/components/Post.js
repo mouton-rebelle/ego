@@ -23,9 +23,9 @@ const Post = ({ post, showOverlay }) => {
 
   return (
     <section className='element'>
-      <PostHeader dates={dates} desc={post.desc} kind='light' title={post.title}/>
-      <PostTree child={post.child} horizontal={post.horizontal} showOverlay={showOverlay}/>
-      <CommentsContainer postId={post._id} slug={post.slug}/>
+      <PostHeader dates={dates} desc={post.desc} kind='light' title={post.title} />
+      <PostTree child={post.child} horizontal={post.horizontal} showOverlay={showOverlay} />
+      <CommentsContainer postId={post._id} slug={post.slug} />
     </section>
   )
 }

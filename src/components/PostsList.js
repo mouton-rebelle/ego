@@ -6,7 +6,7 @@ const PostsList = ({ posts, showOverlay }) => {
   return (
     <div>
       {posts.map((p) =>
-        <div key={p._id}>
+        <div key={p._id} className='aSinglePost'>
           <Post post={p} showOverlay={showOverlay} />
         </div>
       )}

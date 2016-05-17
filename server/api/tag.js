@@ -1,4 +1,4 @@
-import Monk from 'monk'
+import Monk from 'monkii'
 import {uniq as _uniq} from 'lodash'
 
 let conn = Monk('localhost/ego')

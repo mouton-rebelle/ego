@@ -15,7 +15,7 @@ const PostHeader = ({ children, dates, kind, title, desc }) => {
         {desc ? <div className={classes.desc} dangerouslySetInnerHTML={{__html: desc}} /> : null}
       </div>
       <div className='pHead__date'>
-        {dates ? <PostDateRange dates={dates}/> : null}
+        {dates ? <PostDateRange dates={dates} /> : null}
       </div>
       {React.Children.map(children, (c, i) => {
         return (

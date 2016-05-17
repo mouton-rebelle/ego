@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react'
 import { actions } from 'redux/modules/comments'
 import { connect } from 'react-redux'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 import { get as _get } from 'lodash'
 import CommentsList from 'components/CommentsList'
 import CommentForm from 'components/CommentForm'
@@ -22,6 +23,8 @@ export class CommentsContainer extends Component {
 
   constructor (props) {
     super(props)
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
+
     this.save = (comment) => {
       comment.postId = this.props.postId
       this.props.save(comment, this.props.slug)
@@ -46,11 +49,11 @@ export class CommentsContainer extends Component {
     const btnLabel = `${shown ? 'Masquer' : 'Voir'} les messages (${count})`
     return (
       <div className='comContainer'>
-        <Btn text={btnLabel} handler={this.toggleVisibility} variant='alt'/>
+        <Btn text={btnLabel} handler={this.toggleVisibility} variant='alt' />
         {shown ? (
           <div>
             <CommentsList status={status} comments={comments} />
-            <CommentForm status={status} save={this.save}/>
+            <CommentForm status={status} save={this.save} />
           </div>
           ) : null}
       </div>

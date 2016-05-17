@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react'
 import ReactDOM from 'react-dom'
 import { debounce } from 'lodash'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 export default class PostImage extends Component {
 
   static propTypes = {
@@ -10,6 +11,7 @@ export default class PostImage extends Component {
 
   constructor (props, context) {
     super(props, context)
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
     this.state = {
       imageVisible: false,
       imageLoaded: false,

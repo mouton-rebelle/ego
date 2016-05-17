@@ -27,7 +27,7 @@ export default class ImageInfo extends Component {
       [cat, name] = temp
     }
     let props = {category: cat, name: name}
-    return <Tag key={t} {...props}/>
+    return <Tag key={t} {...props} />
   }
 
   render () {
@@ -36,14 +36,14 @@ export default class ImageInfo extends Component {
     return (
       <div className={classes}>
         <h4 className='imgInfo__title'>{label}</h4>
-        {desc ? <p className='imgInfo__desc' dangerouslySetInnerHTML={{__html: desc}}/> : null}
+        {desc ? <p className='imgInfo__desc' dangerouslySetInnerHTML={{__html: desc}} /> : null}
         <p className='imgInfo__desc'>{moment(takenOn).format('dddd DD MMMM YYYY [-] HH[h]mm')}</p>
         <p className='imgInfo__desc imgInfo__desc--exif'>
-          <Exif value={apn}/>
-          <Exif value={aperture} prefix='f'/>
-          <Exif value={speed} suffix='s'/>
-          <Exif value={iso} prefix='ISO'/>
-          <Exif value={bias} suffix='EV'/>
+          <Exif value={apn} />
+          <Exif value={aperture} prefix='f' />
+          <Exif value={speed} suffix='s' />
+          <Exif value={iso} prefix='ISO' />
+          <Exif value={bias} suffix='EV' />
         </p>
         {tags
             .sort((a, b) => a > b ? 1 : -1)

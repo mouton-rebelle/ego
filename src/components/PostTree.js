@@ -18,12 +18,12 @@ export default class PostTree extends Component {
       <PostMesh childWeight={childWeight} horizontal={horizontal}>
         {child.map((c, indice) => {
           if (c.image) {
-            return <PostImage showOverlay={showOverlay} image={c.image} key={c.image.id}/>
+            return <PostImage showOverlay={showOverlay} image={c.image} key={c.image.id} />
           } else {
             return <PostTree
               showOverlay={showOverlay}
               child={c.child}
-              horizontal={c.horizontal} key={indice} weight={c.weight}/>
+              horizontal={c.horizontal} key={indice} weight={c.weight} />
           }
         })}
       </PostMesh>

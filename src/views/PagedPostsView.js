@@ -4,6 +4,7 @@ import { get as _get } from 'lodash'
 import Pager from 'components/Pager'
 import ImageOverlay from 'components/ImageOverlay'
 import PostsList from 'components/PostsList'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 import { postLoadPage } from 'redux/modules/posts'
 import { actions } from 'redux/modules/images'
 
@@ -28,6 +29,7 @@ export class PagedPostsView extends React.Component {
 
   constructor (props) {
     super(props)
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
     this.onKeyDown = (evt) => {
       if (this.props.overlayShown === false) {
         return
@@ -80,10 +82,10 @@ export class PagedPostsView extends React.Component {
           shown={this.props.overlayShown}
           close={this.props.closeOverlay}
           toggleHud={this.props.toggleHud}
-          hud={this.props.overlayHasHUD}/>
-        <Pager basePath='/page/' currentPage={this.props.currentPage} nbPages={this.props.nbPages}/>
+          hud={this.props.overlayHasHUD} />
+        <Pager basePath='/page/' currentPage={this.props.currentPage} nbPages={this.props.nbPages} />
         <PostsList posts={this.props.posts} showOverlay={this.props.prepareOverlay} />
-        <Pager basePath='/page/' currentPage={this.props.currentPage} nbPages={this.props.nbPages}/>
+        <Pager basePath='/page/' currentPage={this.props.currentPage} nbPages={this.props.nbPages} />
       </div>
     )
   }

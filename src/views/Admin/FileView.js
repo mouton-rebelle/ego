@@ -21,7 +21,7 @@ export class FileView extends React.Component {
   render () {
     return (
       <div className='container'>
-        <Uploader uploadFiles={this.props.uploadFiles}/>
+        <Uploader uploadFiles={this.props.uploadFiles} />
         <FileList
           files={this.props.queue}
           hover={this.props.hoverFile}

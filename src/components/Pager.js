@@ -15,7 +15,7 @@ class Page {
 const Pager = ({ basePath, nbPages, currentPage }) => {
   let pages = []
   if (nbPages < 2) {
-    return <div/>
+    return <div />
   }
 
   let startPager = currentPage - Math.floor(numPagesToShow / 2)

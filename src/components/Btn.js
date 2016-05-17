@@ -1,7 +1,13 @@
 import React, { Component, PropTypes } from 'react'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 import { Link } from 'react-router'
 import { get as _get } from 'lodash'
 export default class Btn extends Component {
+
+  constructor (props) {
+    super(props)
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
+  }
 
   static propTypes = {
     disabled: PropTypes.bool,

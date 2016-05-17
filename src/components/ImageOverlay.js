@@ -12,8 +12,8 @@ const ImageOverlay = ({image, post, shown, close, hud, toggleHud}) => {
         {
           post
           ? <PostHeader className='pHead--dark' desc={post.desc} kind='dark' title={post.title}>
-            <Btn handler={toggleHud} text='Infos [space]' variant='hud'/>
-            <Btn handler={close} text='Fermer [esc]' variant='hud'/>
+            <Btn handler={toggleHud} text='Infos [space]' variant='hud' />
+            <Btn handler={close} text='Fermer [esc]' variant='hud' />
           </PostHeader>
           : null
         }

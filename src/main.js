@@ -7,9 +7,12 @@ import makeRoutes from './routes'
 import Root from './containers/Root'
 import configureStore from './redux/configureStore'
 import moment from 'moment'
+import {whyDidYouUpdate} from 'why-did-you-update'
 
 moment.locale('fr')
-
+if (__DEBUG__ && 1===2) {
+  whyDidYouUpdate(React, { ignore: /^Connect/ })
+}
 // Configure history for react-router
 const browserHistory = useRouterHistory(createBrowserHistory)({
   basename: __BASENAME__

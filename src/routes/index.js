@@ -24,9 +24,9 @@ export default (store) => {
     <div>
       <Route path='/' component={CoreLayout}>
         <IndexRoute component={PagedPostsView} />
-        <Route path='/page/:currentPage' component={PagedPostsView}/>
-        <Route path='/post/:slug(/:imageId)' component={SinglePostView}/>
-        <Route path='/about' component={About}/>
+        <Route path='/page/:currentPage' component={PagedPostsView} />
+        <Route path='/post/:slug(/:imageId)' component={SinglePostView} />
+        <Route path='/about' component={About} />
       </Route>
       <Route path='/admin' component={AdminLayout}>
         <IndexRoute component={FileView} />

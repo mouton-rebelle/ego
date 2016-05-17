@@ -1,4 +1,4 @@
-import Monk from 'monk'
+import Monk from 'monkii'
 
 let conn = Monk('localhost/ego')
 let db = {

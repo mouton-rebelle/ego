@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 
 export default class PostMesh extends Component {
 
@@ -8,6 +9,11 @@ export default class PostMesh extends Component {
     horizontal: PropTypes.bool
   };
 
+  constructor (props) {
+    super(props)
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
+  }
+
   render () {
     const { horizontal, children, childWeight } = this.props
 
@@ -16,7 +22,7 @@ export default class PostMesh extends Component {
     }
 
     if (horizontal) {
-      meshStyle.display = 'flex;display:-webkit-flex'
+      meshStyle.display = 'flex'
     }
 
     return (
@@ -28,7 +34,7 @@ export default class PostMesh extends Component {
           childStyle.WebkitFlexBasis = `${childWeight[i]}%`
         }
         return (
-          <div key={i} style={childStyle}>
+          <div key={i} style={childStyle} className='meshChildContainer'>
             {c}
           </div>
         )

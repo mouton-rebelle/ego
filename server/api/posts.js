@@ -1,5 +1,5 @@
 import * as _ from 'lodash'
-import Monk from 'monk'
+import Monk from 'monkii'
 import {slugify} from './utils'
 
 let conn = Monk('localhost/ego')

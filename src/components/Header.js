@@ -1,10 +1,12 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 
 export default class Header extends Component {
 
   constructor (props, context) {
     super(props, context)
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
     this.state = {
       small: false
     }

@@ -16,10 +16,10 @@ export default class CommentForm extends Component {
           className='com-form__input com-form__input--textarea'
           placeholder='Que dis-je ?'
           rows='4' />
-        <input className='com-form__input' placeholder='Qui suis-je ? '/>
+        <input className='com-form__input' placeholder='Qui suis-je ? ' />
         <div className='com-form__action'>
           <Btn disabled={status === 'SAVING'}
-            handler={save} kind='primary' text='laisser un message'/>
+            handler={save} kind='primary' text='laisser un message' />
         </div>
       </form>
     )

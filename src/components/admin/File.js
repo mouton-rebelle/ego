@@ -52,7 +52,7 @@ export default class File extends Component {
             <TagList reference={tagReference} />
           </Field>
           <div className='form__action'>
-            <Btn text='Delete uploaded file' handler={this.delete} variant='alt'/>
+            <Btn text='Delete uploaded file' handler={this.delete} variant='alt' />
             <Btn text='Save image' handler={this.save} />
           </div>
         </div>

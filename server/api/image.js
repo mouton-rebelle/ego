@@ -1,4 +1,4 @@
-import Monk from 'monk'
+import Monk from 'monkii'
 import {persistUploadedFile, getSizePromise, UPLOAD_DIR} from './file'
 let conn = Monk('localhost/ego')
 let db = {
