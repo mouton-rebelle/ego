@@ -5,8 +5,10 @@
 }
 
 .head-nav{
+  margin:0;
   &__item{
     &__link{
+      transition: color ease-in 0.4s;
       padding: 1vw;
       font-size: 1.4vh;
       text-decoration: none;
@@ -21,21 +23,46 @@
 
 .logo{
   font-family: 'Roboto Mono';
+  transition: all ease-in 0.4s;
+  margin:0;
   font-weight: 300;
-  font-size: 5vh;
+  font-size: 60px;
   color:$brand-primary;
   &__alt{
     color:$brand-alt;
+    transition: color ease-in 0.4s;
   }
 }
 
 
 .header{
+  position: fixed;
+  z-index:9999;
+  top:0;
+  right:0;
+  left: 0;
+  height: 120px;
+  padding: 0 25px;
   display: flex;
   align-items: center;
   border-bottom: 1px solid $light-grey;
   margin-bottom: 20px;
+  transition: all ease-in 0.4s;
   &__logo{
     flex-grow:2;
+  }
+  &--small{
+    background: #000;
+    height: 40px;
+    .head-nav__item__link{
+
+    }
+    .logo{
+      font-size:18px;
+      color:$brand-primary;
+      &__alt{
+        color: $brand-primary;
+      }
+    }
   }
 }
