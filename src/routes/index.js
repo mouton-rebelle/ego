@@ -11,6 +11,7 @@ import AdminLayout from 'layouts/AdminLayout'
 import PagedPostsView from 'views/PagedPostsView'
 import SinglePostView from 'views/SinglePostView'
 import FileView from 'views/Admin/FileView'
+import ImageView from 'views/Admin/ImageView'
 
 const About = React.createClass({
   render () {
@@ -30,6 +31,7 @@ export default (store) => {
       </Route>
       <Route path='/admin' component={AdminLayout}>
         <IndexRoute component={FileView} />
+        <Route path='images' component={ImageView} />
       </Route>
     </div>
   )

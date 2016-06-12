@@ -8,10 +8,7 @@ export default class File extends Component {
   static propTypes={
     file: PropTypes.object.isRequired,
     createImage: PropTypes.func.isRequired,
-    deleteUploadedFile: PropTypes.func.isRequired,
-    hover: PropTypes.func.isRequired,
-    select: PropTypes.func.isRequired,
-    deselect: PropTypes.func.isRequired
+    deleteUploadedFile: PropTypes.func.isRequired
   }
 
   constructor (props) {

@@ -4,6 +4,8 @@ const initialState = {
   byId: {
   },
   loading: false,
+  unlinked: [],
+  selected: [],
   overlay: {
     shown: false,
     post: null,
@@ -48,6 +50,15 @@ function flattenImages (c, images) {
     }
     c.child.forEach((child) => flattenImages(child, images))
     return images
+  }
+}
+
+export const loadUnlinkedImages = () => {
+  return {
+    type: 'IMAGE_LOAD',
+    payload: {
+      promise: request.get('/api/images/unlinked').promise()
+    }
   }
 }
 
@@ -160,11 +171,34 @@ export default function images (state = initialState, action) {
     case IMAGE_LOAD_PENDING:
       return {...state, loading: true}
     case IMAGE_LOAD_FULFILLED:
-      console.log(action.payload)
-      return state
+      let images = action.payload.body
+      let byId = {}
+      let unlinked = []
+      images.forEach((img) => {
+        byId[img._id] = img
+        unlinked.push(img._id)
+      })
+      return {
+        ...state,
+        loading: false,
+        byId: {
+          ...state.byId,
+          ...byId
+        },
+        unlinked: [
+          ...state.unlinked,
+          ...unlinked
+        ]
+      }
     case IMAGE_CREATE_FULFILLED:
-      console.log(action)
-      return state
+      let img = action.payload.body
+      return {
+        ...state,
+        byId: {
+          ...state.byId,
+          [img._id]: img
+        }
+      }
     default:
       return state
   }

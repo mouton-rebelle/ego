@@ -3,7 +3,7 @@ import ImageInfo from 'components/ImageInfo'
 import PostHeader from 'components/PostHeader'
 import Btn from 'components/Btn'
 
-const ImageOverlay = ({image, post, shown, close, hud, toggleHud}) => {
+const ImageOverlay = ({image, post, shown, close, hud, toggleHud}: {shown: boolean}) => {
   const classes = `overlay ${shown ? 'overlay--shown' : ''} ${hud ? 'overlay--withHUD' : ''}`
   const overlayStyle = image ? {backgroundImage: `url(/orig/${image.file})`} : {}
   return (

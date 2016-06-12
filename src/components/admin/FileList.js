@@ -4,11 +4,9 @@ export default class FileList extends Component {
 
   static propTypes={
     files: PropTypes.array.isRequired,
+    loading: PropTypes.bool.isRequired,
     createImage: PropTypes.func.isRequired,
     deleteUploadedFile: PropTypes.func.isRequired,
-    hover: PropTypes.func.isRequired,
-    select: PropTypes.func.isRequired,
-    deselect: PropTypes.func.isRequired,
     loadFiles: PropTypes.func.isRequired
   };
 
@@ -17,6 +15,9 @@ export default class FileList extends Component {
   }
 
   render () {
+    if (this.props.loading) {
+      return (<div>Loading</div>)
+    }
     if (!this.props.files || !this.props.files.length) {
       return (<div>No files yet</div>)
     }
@@ -28,9 +29,6 @@ export default class FileList extends Component {
             file={f}
             deleteUploadedFile={this.props.deleteUploadedFile}
             createImage={this.props.createImage}
-            hover={this.props.hover}
-            select={this.props.select}
-            deselect={this.props.deselect}
             />
         )}
       </div>

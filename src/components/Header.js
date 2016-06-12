@@ -19,7 +19,9 @@ export default class Header extends Component {
       })
     })
   }
-
+  shouldComponentUpdate () {
+    return ''
+  }
   render () {
     const classes = `header ${this.state.small ? 'header--small' : ''}`
     return (

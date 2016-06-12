@@ -1,3 +1,4 @@
+// @flow
 import React, { PropTypes, Component } from 'react'
 import Tag from './Tag'
 import Exif from './Exif'
@@ -20,8 +21,8 @@ export default class ImageInfo extends Component {
   }
 
   renderTag (t) {
-    let cat = ''
-    let name = t
+    let cat: string = ''
+    let name: string = t
     let temp = t.split(':')
     if (temp.length === 2) {
       [cat, name] = temp

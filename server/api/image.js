@@ -14,7 +14,8 @@ export async function createImage (uploadedFilename, image) {
     ...size,
     file: filename
   }
-  db.images.insert(image)
+  await db.images.insert(image)
+  return image
 }
 
 export async function updateImage (image) {

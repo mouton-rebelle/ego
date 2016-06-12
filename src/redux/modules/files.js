@@ -28,6 +28,7 @@ export const FILE_DESELECTED = 'FILE_DESELECTED'
 
 const initialState = {
   queue: [],
+  loading: false,
   hover: ''
 }
 
@@ -115,6 +116,11 @@ export default function files (state = initialState, action) {
         }
       }
     case FILE_UPLOAD_FULFILLED:
+    case FILEQUEUE_LOAD_PENDING:
+      return {
+        ...state,
+        loading: true
+      }
     case FILEQUEUE_LOAD_FULFILLED:
       let newFiles = {}
       action.payload.body.forEach((f) => {
@@ -123,6 +129,7 @@ export default function files (state = initialState, action) {
       })
       return {
         ...state,
+        loading: false,
         queue: {...state.queue, ...newFiles}
       }
     default:
