@@ -1,12 +1,13 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { loadUnlinkedImages } from 'redux/modules/images'
-import ImageInfo from 'components/ImageInfo'
+import Post from 'components/Post'
 
 export class ImageView extends React.Component {
   static propTypes = {
     loadUnlinkedImages: PropTypes.func.isRequired,
-    images: PropTypes.array.isRequired
+    images: PropTypes.array.isRequired,
+    post: PropTypes.object.isRequired
   };
 
   componentWillMount () {
@@ -15,18 +16,24 @@ export class ImageView extends React.Component {
 
   render () {
     return (
-      <div className='container' style={{background: 'tomato'}}>
-        {this.props.images.map((img) =>
-          <div className='file'>
-            <div
-              className='file__preview'
-              style={{backgroundImage: `url('/orig/${img.file}')`}}>
-            </div>
-            <div className='file__exif'>
-              <ImageInfo {...img} placement='admin' />
+      <div className='container'>
+        <div className='split'>
+          <div className='split__item'>
+            <div className='imagePicker'>
+              {this.props.images.map((img) =>
+                <div className='imagePicker__item'>
+                  <div
+                    className='imagePicker__item__img'
+                    style={{backgroundImage: `url('/orig/${img.file}')`}}>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
-        )}
+          <div className='split'>
+            <Post post={this.props.post} admin />
+          </div>
+        </div>
       </div>
     )
   }
@@ -35,7 +42,8 @@ export class ImageView extends React.Component {
 const mapStateToProps = (state) => {
   let images = state.images.unlinked.map((id) => state.images.byId[id])
   return {
-    images
+    images,
+    post: state.posts.newPost
   }
 }
 export default connect((mapStateToProps), {

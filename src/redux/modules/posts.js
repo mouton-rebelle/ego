@@ -71,6 +71,7 @@ export const actions = {
 const initialState = {
   count: 0,
   nbPages: 0,
+  newPost: {},
   bySlug: {},
   byPage: {},
   loadingPages: [],
