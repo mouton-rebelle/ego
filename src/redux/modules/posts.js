@@ -71,7 +71,10 @@ export const actions = {
 const initialState = {
   count: 0,
   nbPages: 0,
-  newPost: {},
+  newPost: {
+    title: 'my new post',
+    _id: 0
+  },
   bySlug: {},
   byPage: {},
   loadingPages: [],

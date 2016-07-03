@@ -2,6 +2,9 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { loadUnlinkedImages } from 'redux/modules/images'
 import Post from 'components/Post'
+import ImageAdmin from 'components/Admin/Image'
+var HTML5Backend = require('react-dnd-html5-backend')
+var DragDropContext = require('react-dnd').DragDropContext
 
 export class ImageView extends React.Component {
   static propTypes = {
@@ -21,16 +24,11 @@ export class ImageView extends React.Component {
           <div className='split__item'>
             <div className='imagePicker'>
               {this.props.images.map((img) =>
-                <div className='imagePicker__item'>
-                  <div
-                    className='imagePicker__item__img'
-                    style={{backgroundImage: `url('/orig/${img.file}')`}}>
-                  </div>
-                </div>
+                <ImageAdmin key={img._id} img={img} />
               )}
             </div>
           </div>
-          <div className='split'>
+          <div className='split__item split__item--edit'>
             <Post post={this.props.post} admin />
           </div>
         </div>
@@ -46,6 +44,6 @@ const mapStateToProps = (state) => {
     post: state.posts.newPost
   }
 }
-export default connect((mapStateToProps), {
+export default DragDropContext(HTML5Backend)(connect((mapStateToProps), {
   loadUnlinkedImages
-})(ImageView)
+})(ImageView))

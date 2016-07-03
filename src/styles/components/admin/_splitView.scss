@@ -2,5 +2,9 @@
   display: flex;
   &__item{
     flex-grow: 1;
+    &--edit{
+      flex-basis: 400px;
+      flex-shrink: 0;
+    }
   }
 }

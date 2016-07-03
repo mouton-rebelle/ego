@@ -3,6 +3,9 @@
   flex-wrap: wrap;
   &__item{
     flex:0 1 100px;
+    &--dragging{
+      opacity: 0.3;
+    }
     &__img{
       display: block;
       background-size: cover;
