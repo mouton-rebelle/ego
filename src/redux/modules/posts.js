@@ -34,6 +34,7 @@ export const COM_LOAD_RECENTS_PENDING = 'COM_LOAD_RECENTS_PENDING'
 export const COM_LOAD_RECENTS_FULFILLED = 'COM_LOAD_RECENTS_FULFILLED'
 export const COM_LOAD_RECENTS_REJECTED = 'COM_LOAD_RECENTS_REJECTED'
 
+export const ADD_IMAGE_TO_POST = 'ADD_IMAGE_TO_POST'
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -50,7 +51,12 @@ export const postLoadPage = (page: number, nbPerPage: number = 10): Action => {
     }
   }
 }
-
+export const addImageToPost = (image, path) => {
+  return {
+    type: ADD_IMAGE_TO_POST,
+    payload: {image, path}
+  }
+}
 export const postLoadBySlug = (slug: string): Action => {
   return {
     type: 'POST_LOAD_BYSLUG',
@@ -63,7 +69,8 @@ export const postLoadBySlug = (slug: string): Action => {
 
 export const actions = {
   postLoadPage,
-  postLoadBySlug
+  postLoadBySlug,
+  addImageToPost
 }
 // ------------------------------------
 // Reducer
@@ -73,7 +80,8 @@ const initialState = {
   nbPages: 0,
   newPost: {
     title: 'my new post',
-    _id: 0
+    _id: 0,
+    child: []
   },
   bySlug: {},
   byPage: {},
@@ -83,6 +91,24 @@ const initialState = {
 
 export default function posts (state = initialState, action) {
   switch (action.type) {
+    case ADD_IMAGE_TO_POST:
+      return {
+        ...state,
+        newPost:
+        {
+          ...state.newPost,
+          child: [
+            ...state.newPost.child,
+            {
+              weight: 100,
+              image: {
+                ...action.payload.image,
+                ratio: action.payload.image.width / action.payload.image.height
+              }
+            }
+          ]
+        }
+      }
     case COM_SAVE_FULFILLED:
       let com = action.payload.body
       state.bySlug[action.meta.slug].comments.push(com._id)

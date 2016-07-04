@@ -1,12 +1,28 @@
 import React, { PropTypes, Component } from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
+import { DropTarget } from 'react-dnd'
 
-export default class PostMesh extends Component {
+const imageTarget = {
+  drop (props, monitor) {
+    props.addImageToPost(monitor.getItem(), '0')
+  }
+}
+
+function collect (connect, monitor) {
+  return {
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver()
+  }
+}
+export class PostMesh extends Component {
 
   static propTypes = {
     childWeight: PropTypes.array,
     children: PropTypes.array,
-    horizontal: PropTypes.bool
+    horizontal: PropTypes.bool,
+    connectDropTarget: PropTypes.func,
+    addImageToPost: PropTypes.func,
+    isOver: PropTypes.bool
   };
 
   constructor (props) {
@@ -15,17 +31,19 @@ export default class PostMesh extends Component {
   }
 
   render () {
-    const { horizontal, children, childWeight } = this.props
+    const { horizontal, children, childWeight, connectDropTarget, isOver } = this.props
 
     let meshStyle = {
       minHeight: 100
     }
-
+    if (isOver) {
+      meshStyle.backgroundColor = 'tomato'
+    }
     if (horizontal) {
       meshStyle.display = 'flex'
     }
 
-    return (
+    return connectDropTarget(
       <div style={meshStyle}>
       {React.Children.map(children, (c, i) => {
         let childStyle = {}
@@ -43,3 +61,5 @@ export default class PostMesh extends Component {
     )
   }
 }
+
+export default DropTarget('image', imageTarget, collect)(PostMesh)

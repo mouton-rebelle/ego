@@ -6,7 +6,7 @@ export default class PostImage extends Component {
 
   static propTypes = {
     image: PropTypes.object.isRequired,
-    showOverlay: PropTypes.func.isRequired
+    showOverlay: PropTypes.func
   };
 
   constructor (props, context) {
@@ -70,6 +70,7 @@ export default class PostImage extends Component {
 
   render () {
     const {image} = this.props
+    console.log(image)
     const styles =
       {
         base: {

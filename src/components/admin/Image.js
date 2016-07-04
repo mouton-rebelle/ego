@@ -1,8 +1,5 @@
 import React, {PropTypes} from 'react'
 import { DragSource } from 'react-dnd'
-const Types = {
-  IMAGE: 'image'
-}
 
 /**
  * Specifies the drag source contract.
@@ -11,7 +8,7 @@ const Types = {
 const ImgSource = {
   beginDrag (props) {
     // Return the data describing the dragged item
-    const item = { id: props.img._id }
+    const item = { ...props.img }
     return item
   },
 
@@ -55,4 +52,4 @@ Image.propTypes = {
   img: PropTypes.object.isRequired
 }
 
-export default DragSource(Types.IMAGE, ImgSource, collect)(Image)
+export default DragSource('image', ImgSource, collect)(Image)
