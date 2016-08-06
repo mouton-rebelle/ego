@@ -22,6 +22,7 @@ export class PostMesh extends Component {
     horizontal: PropTypes.bool,
     connectDropTarget: PropTypes.func,
     addImageToPost: PropTypes.func,
+    toggleMeshDirection: PropTypes.func,
     isOver: PropTypes.bool
   };
 
@@ -30,8 +31,43 @@ export class PostMesh extends Component {
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
   }
 
+  warpWithOverlay (c, horizontal, toggleMeshDirection = null) {
+    console.log(toggleMeshDirection)
+    return (
+      <div className='amc'>
+        <div className='amc__overlay'>
+          <div className='amcBt'>Drap</div>
+          <div className='amcBt'>Drop</div>
+          <button onClick={toggleMeshDirection} className='amcBt'>{horizontal ? 'vertical' : 'horizontal'}</button>
+        </div>
+        <div className='amc__content'>
+          {c}
+        </div>
+      </div>
+    )
+  }
+
+  baseRender (meshStyle, children, horizontal, childWeight, admin = false) {
+    return (
+      <div style={meshStyle}>
+      {React.Children.map(children, (c, i) => {
+        let childStyle = {}
+        if (horizontal) {
+          childStyle.flexBasis = `${childWeight[i]}%`
+          childStyle.WebkitFlexBasis = `${childWeight[i]}%`
+        }
+        return (
+          <div key={i} style={childStyle} className='meshChildContainer'>
+          {c}
+          </div>
+        )
+      })}
+      </div>
+    )
+  }
+
   render () {
-    const { horizontal, children, childWeight, connectDropTarget, isOver } = this.props
+    const { horizontal, children, childWeight, connectDropTarget, isOver, toggleMeshDirection } = this.props
 
     let meshStyle = {
       minHeight: 100
@@ -42,24 +78,17 @@ export class PostMesh extends Component {
     if (horizontal) {
       meshStyle.display = 'flex'
     }
-
-    return connectDropTarget(
-      <div style={meshStyle}>
-      {React.Children.map(children, (c, i) => {
-        let childStyle = {}
-        if (horizontal) {
-          childStyle.flexBasis = `${childWeight[i]}%`
-          childStyle.WebkitFlexBasis = `${childWeight[i]}%`
-        }
-        return (
-          <div key={i} style={childStyle} className='meshChildContainer'>
-            {c}
-          </div>
+    if (connectDropTarget) {
+      return connectDropTarget(
+        this.warpWithOverlay(
+          this.baseRender(meshStyle, children, horizontal, childWeight, true),
+          horizontal, toggleMeshDirection
         )
-      })}
-      </div>
-    )
+      )
+    } else {
+      return this.baseRender(meshStyle, children, horizontal, childWeight)
+    }
   }
 }
-
-export default DropTarget('image', imageTarget, collect)(PostMesh)
+export default PostMesh
+export const AdminPostMesh = DropTarget('image', imageTarget, collect)(PostMesh)

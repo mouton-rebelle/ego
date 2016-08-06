@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { loadUnlinkedImages } from 'redux/modules/images'
-import { addImageToPost } from 'redux/modules/posts'
+import { addImageToPost, toggleMeshDirection } from 'redux/modules/posts'
 import Post from 'components/Post'
 import ImageAdmin from 'components/Admin/Image'
 var HTML5Backend = require('react-dnd-html5-backend')
@@ -11,6 +11,7 @@ export class ImageView extends React.Component {
   static propTypes = {
     loadUnlinkedImages: PropTypes.func.isRequired,
     addImageToPost: PropTypes.func.isRequired,
+    toggleMeshDirection: PropTypes.func.isRequired,
     images: PropTypes.array.isRequired,
     post: PropTypes.object.isRequired
   };
@@ -31,7 +32,10 @@ export class ImageView extends React.Component {
             </div>
           </div>
           <div className='split__item split__item--edit'>
-            <Post post={this.props.post} addImageToPost={this.props.addImageToPost} />
+            <Post
+              post={this.props.post}
+              addImageToPost={this.props.addImageToPost}
+              toggleMeshDirection={this.props.toggleMeshDirection} />
           </div>
         </div>
       </div>
@@ -48,5 +52,6 @@ const mapStateToProps = (state) => {
 }
 export default DragDropContext(HTML5Backend)(connect((mapStateToProps), {
   loadUnlinkedImages,
-  addImageToPost
+  addImageToPost,
+  toggleMeshDirection
 })(ImageView))

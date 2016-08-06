@@ -19,7 +19,9 @@ export default class PostImage extends Component {
     }
 
     this.showOverlay = () => {
-      this.props.showOverlay(this.props.image)
+      if (this.props.showOverlay) {
+        this.props.showOverlay(this.props.image)
+      }
     }
 
     this.updateViewport = debounce(() => {
@@ -70,7 +72,6 @@ export default class PostImage extends Component {
 
   render () {
     const {image} = this.props
-    console.log(image)
     const styles =
       {
         base: {

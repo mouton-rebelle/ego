@@ -11,7 +11,7 @@ export default class ImageInfo extends Component {
     tags: PropTypes.array.isRequired,
     takenOn: PropTypes.string.isRequired,
     placement: PropTypes.string.isRequired, // TODO oneof ?
-    label: PropTypes.string.isRequired,
+    label: PropTypes.string,
     desc: PropTypes.string,
     apn: PropTypes.string,
     speed: PropTypes.string.isRequired,

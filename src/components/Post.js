@@ -17,7 +17,7 @@ function flattenImages (c, images) {
   }
 }
 
-const Post = ({ post, showOverlay, addImageToPost }) => {
+const Post = ({ post, showOverlay, addImageToPost, toggleMeshDirection }) => {
   const images = flattenImages(post, [])
   const dates = images.map((img) => img.takenOn).sort((a, b) => a > b ? 1 : -1)
 
@@ -25,7 +25,7 @@ const Post = ({ post, showOverlay, addImageToPost }) => {
     <section className='element'>
       <PostHeader dates={dates} desc={post.desc} kind='light' title={post.title} />
       {post.child ? <PostTree child={post.child} horizontal={post.horizontal}
-        showOverlay={showOverlay} addImageToPost={addImageToPost} /> : ''}
+        showOverlay={showOverlay} addImageToPost={addImageToPost} toggleMeshDirection={toggleMeshDirection} /> : ''}
       {addImageToPost ? '' : <CommentsContainer postId={post._id} slug={post.slug} />}
     </section>
   )
@@ -33,6 +33,7 @@ const Post = ({ post, showOverlay, addImageToPost }) => {
 Post.propTypes = {
   post: PropTypes.object.isRequired,
   addImageToPost: PropTypes.func,
+  toggleMeshDirection: PropTypes.func,
   showOverlay: PropTypes.func
 }
 

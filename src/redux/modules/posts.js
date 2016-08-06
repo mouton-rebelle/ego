@@ -35,6 +35,8 @@ export const COM_LOAD_RECENTS_FULFILLED = 'COM_LOAD_RECENTS_FULFILLED'
 export const COM_LOAD_RECENTS_REJECTED = 'COM_LOAD_RECENTS_REJECTED'
 
 export const ADD_IMAGE_TO_POST = 'ADD_IMAGE_TO_POST'
+
+export const TOGGLE_MESH_DIRECTION = 'TOGGLE_MESH_DIRECTION'
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -57,6 +59,13 @@ export const addImageToPost = (image, path) => {
     payload: {image, path}
   }
 }
+export const toggleMeshDirection = (path) => {
+  console.log('called')
+  return {
+    type: TOGGLE_MESH_DIRECTION,
+    payload: {path}
+  }
+}
 export const postLoadBySlug = (slug: string): Action => {
   return {
     type: 'POST_LOAD_BYSLUG',
@@ -70,7 +79,8 @@ export const postLoadBySlug = (slug: string): Action => {
 export const actions = {
   postLoadPage,
   postLoadBySlug,
-  addImageToPost
+  addImageToPost,
+  toggleMeshDirection
 }
 // ------------------------------------
 // Reducer
@@ -81,6 +91,7 @@ const initialState = {
   newPost: {
     title: 'my new post',
     _id: 0,
+    horizontal: true,
     child: []
   },
   bySlug: {},
@@ -107,6 +118,15 @@ export default function posts (state = initialState, action) {
               }
             }
           ]
+        }
+      }
+    case TOGGLE_MESH_DIRECTION:
+      return {
+        ...state,
+        newPost:
+        {
+          ...state.newPost,
+          horizontal: !state.newPost.horizontal
         }
       }
     case COM_SAVE_FULFILLED:
