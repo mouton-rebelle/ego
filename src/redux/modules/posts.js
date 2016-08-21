@@ -34,6 +34,9 @@ export const COM_LOAD_RECENTS_PENDING = 'COM_LOAD_RECENTS_PENDING'
 export const COM_LOAD_RECENTS_FULFILLED = 'COM_LOAD_RECENTS_FULFILLED'
 export const COM_LOAD_RECENTS_REJECTED = 'COM_LOAD_RECENTS_REJECTED'
 
+export const ADD_IMAGE_TO_POST = 'ADD_IMAGE_TO_POST'
+
+export const TOGGLE_MESH_DIRECTION = 'TOGGLE_MESH_DIRECTION'
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -50,7 +53,19 @@ export const postLoadPage = (page: number, nbPerPage: number = 10): Action => {
     }
   }
 }
-
+export const addImageToPost = (image, path) => {
+  return {
+    type: ADD_IMAGE_TO_POST,
+    payload: {image, path}
+  }
+}
+export const toggleMeshDirection = (path) => {
+  console.log('called')
+  return {
+    type: TOGGLE_MESH_DIRECTION,
+    payload: {path}
+  }
+}
 export const postLoadBySlug = (slug: string): Action => {
   return {
     type: 'POST_LOAD_BYSLUG',
@@ -63,7 +78,9 @@ export const postLoadBySlug = (slug: string): Action => {
 
 export const actions = {
   postLoadPage,
-  postLoadBySlug
+  postLoadBySlug,
+  addImageToPost,
+  toggleMeshDirection
 }
 // ------------------------------------
 // Reducer
@@ -71,6 +88,12 @@ export const actions = {
 const initialState = {
   count: 0,
   nbPages: 0,
+  newPost: {
+    title: 'my new post',
+    _id: 0,
+    horizontal: true,
+    child: []
+  },
   bySlug: {},
   byPage: {},
   loadingPages: [],
@@ -79,6 +102,33 @@ const initialState = {
 
 export default function posts (state = initialState, action) {
   switch (action.type) {
+    case ADD_IMAGE_TO_POST:
+      return {
+        ...state,
+        newPost:
+        {
+          ...state.newPost,
+          child: [
+            ...state.newPost.child,
+            {
+              weight: 100,
+              image: {
+                ...action.payload.image,
+                ratio: action.payload.image.width / action.payload.image.height
+              }
+            }
+          ]
+        }
+      }
+    case TOGGLE_MESH_DIRECTION:
+      return {
+        ...state,
+        newPost:
+        {
+          ...state.newPost,
+          horizontal: !state.newPost.horizontal
+        }
+      }
     case COM_SAVE_FULFILLED:
       let com = action.payload.body
       state.bySlug[action.meta.slug].comments.push(com._id)

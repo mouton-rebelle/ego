@@ -1,12 +1,19 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { loadUnlinkedImages } from 'redux/modules/images'
-import ImageInfo from 'components/ImageInfo'
+import { addImageToPost, toggleMeshDirection } from 'redux/modules/posts'
+import Post from 'components/Post'
+import ImageAdmin from 'components/Admin/Image'
+var HTML5Backend = require('react-dnd-html5-backend')
+var DragDropContext = require('react-dnd').DragDropContext
 
 export class ImageView extends React.Component {
   static propTypes = {
     loadUnlinkedImages: PropTypes.func.isRequired,
-    images: PropTypes.array.isRequired
+    addImageToPost: PropTypes.func.isRequired,
+    toggleMeshDirection: PropTypes.func.isRequired,
+    images: PropTypes.array.isRequired,
+    post: PropTypes.object.isRequired
   };
 
   componentWillMount () {
@@ -15,18 +22,22 @@ export class ImageView extends React.Component {
 
   render () {
     return (
-      <div className='container' style={{background: 'tomato'}}>
-        {this.props.images.map((img) =>
-          <div className='file'>
-            <div
-              className='file__preview'
-              style={{backgroundImage: `url('/orig/${img.file}')`}}>
-            </div>
-            <div className='file__exif'>
-              <ImageInfo {...img} placement='admin' />
+      <div className='container'>
+        <div className='split'>
+          <div className='split__item'>
+            <div className='imagePicker'>
+              {this.props.images.map((img) =>
+                <ImageAdmin key={img._id} img={img} />
+              )}
             </div>
           </div>
-        )}
+          <div className='split__item split__item--edit'>
+            <Post
+              post={this.props.post}
+              addImageToPost={this.props.addImageToPost}
+              toggleMeshDirection={this.props.toggleMeshDirection} />
+          </div>
+        </div>
       </div>
     )
   }
@@ -35,9 +46,12 @@ export class ImageView extends React.Component {
 const mapStateToProps = (state) => {
   let images = state.images.unlinked.map((id) => state.images.byId[id])
   return {
-    images
+    images,
+    post: state.posts.newPost
   }
 }
-export default connect((mapStateToProps), {
-  loadUnlinkedImages
-})(ImageView)
+export default DragDropContext(HTML5Backend)(connect((mapStateToProps), {
+  loadUnlinkedImages,
+  addImageToPost,
+  toggleMeshDirection
+})(ImageView))

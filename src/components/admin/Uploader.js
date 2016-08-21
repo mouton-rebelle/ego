@@ -25,7 +25,7 @@ export default class Uploader extends Component {
           style={{}}
           className='dropzone'
           activeClassName='dropzone--active'
-          rejectedClassName='dropzone--rejected'
+          // rejectedClassName='dropzone--rejected'
           >
           <div className='dropzone__legend'>Drop images to upload</div>
         </Dropzone>

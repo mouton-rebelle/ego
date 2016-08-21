@@ -1,0 +1,49 @@
+.imagePicker{
+  display: flex;
+  flex-wrap: wrap;
+  &__item{
+    flex:0 1 100px;
+    &--dragging{
+      opacity: 0.3;
+    }
+    &__img{
+      display: block;
+      background-size: cover;
+      background-repeat: no-repeat;
+      width: 90px;
+      height:90px;
+      margin:5px;
+      border:1px solid #000;
+      border-radius: 4px;
+    }
+  }
+}
+
+.amc{
+  position: relative;
+  &__overlay{
+    z-index: 1999;
+    position: absolute;
+    top:0;
+    left:0;
+    height: 30px;
+    right:0;
+    background-color:rgba(250, 252, 141, 0.3);
+    display: none;
+    justify-content: center;
+    align-items: center;
+  }
+  &:hover .amc__overlay{
+    display: flex;
+  }
+  &__content{
+    z-index: 88;
+  }
+}
+.amcBt{
+  margin:20px;
+  text-align: center;
+  background: tomato;
+  color:#FFF;
+  padding:5px;
+}

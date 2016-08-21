@@ -6,7 +6,7 @@ export default class PostImage extends Component {
 
   static propTypes = {
     image: PropTypes.object.isRequired,
-    showOverlay: PropTypes.func.isRequired
+    showOverlay: PropTypes.func
   };
 
   constructor (props, context) {
@@ -19,7 +19,9 @@ export default class PostImage extends Component {
     }
 
     this.showOverlay = () => {
-      this.props.showOverlay(this.props.image)
+      if (this.props.showOverlay) {
+        this.props.showOverlay(this.props.image)
+      }
     }
 
     this.updateViewport = debounce(() => {
