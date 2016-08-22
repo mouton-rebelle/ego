@@ -10,8 +10,8 @@ import CoreLayout from 'layouts/CoreLayout'
 import AdminLayout from 'layouts/AdminLayout'
 import PagedPostsView from 'views/PagedPostsView'
 import SinglePostView from 'views/SinglePostView'
-import FileView from 'views/Admin/FileView'
-import ImageView from 'views/Admin/ImageView'
+import FileView from 'views/admin/FileView'
+import ImageView from 'views/admin/ImageView'
 
 const About = React.createClass({
   render () {

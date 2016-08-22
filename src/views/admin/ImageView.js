@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { loadUnlinkedImages } from 'redux/modules/images'
 import { addImageToPost, toggleMeshDirection } from 'redux/modules/posts'
 import Post from 'components/Post'
-import ImageAdmin from 'components/Admin/Image'
+import ImageAdmin from 'components/admin/Image'
 var HTML5Backend = require('react-dnd-html5-backend')
 var DragDropContext = require('react-dnd').DragDropContext
 

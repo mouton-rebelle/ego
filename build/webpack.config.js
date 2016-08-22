@@ -4,7 +4,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import config from '../config'
 import _debug from 'debug'
-import CarteBlanche from 'carte-blanche'
+// import CarteBlanche from 'carte-blanche'
 
 const debug = _debug('app:webpack:config')
 const paths = config.utils_paths
@@ -63,10 +63,7 @@ if (__DEV__) {
   debug('Enable plugins for live development (HMR, NoErrors).')
   webpackConfig.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
-    new CarteBlanche({
-      componentRoot: '../src/components'
-    })
+    new webpack.NoErrorsPlugin()
   )
 } else if (__PROD__) {
   debug('Enable plugins for production (OccurenceOrder, Dedupe & UglifyJS).')
