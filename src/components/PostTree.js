@@ -2,6 +2,11 @@ import React, { PropTypes, Component } from 'react'
 import PostMesh, {AdminPostMesh} from './PostMesh'
 import PostImage from './PostImage'
 
+/**
+ * HOC used to determine if we are at a leaf level, and shall render an image,
+ * or at a branch, and then shall render a Mesh
+ */
+
 export default class PostTree extends Component {
 
   static propTypes = {

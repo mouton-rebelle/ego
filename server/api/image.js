@@ -27,5 +27,5 @@ export async function deleteImage (imageId) {
 }
 
 export async function getUnlinkedImages (imageId) {
-  return await db.images.find({postId: {$exists: false}})
+  return await db.images.find({postId: {$exists: false}}, {limit : 4})
 }

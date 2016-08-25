@@ -32,11 +32,10 @@ export class PostMesh extends Component {
   }
 
   warpWithOverlay (c, horizontal, toggleMeshDirection = null) {
-    console.log(toggleMeshDirection)
     return (
       <div className='amc'>
         <div className='amc__overlay'>
-          <div className='amcBt'>Drap</div>
+          <div className='amcBt'>Drag</div>
           <div className='amcBt'>Drop</div>
           <button onClick={toggleMeshDirection} className='amcBt'>{horizontal ? 'vertical' : 'horizontal'}</button>
         </div>
