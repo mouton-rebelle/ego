@@ -23,9 +23,12 @@ type MeshItemImage = {
   weight: number
 }
 type MeshItem = MeshItemImage | MeshItemMesh
-type MeshOrRoot = Post | MeshItem
+type MeshOrRoot = Post | MeshItemMesh
 
-const locateMesh = function (root: MeshOrRoot, meshId: number, currentIndex: number = 0): MeshItemMesh {
+/*
+  Locate a mesh by id
+ */
+const locateMesh = function (root: MeshOrRoot, meshId: number, currentIndex: number = 0): MeshOrRoot {
   if (root.child) {
     root.child.forEach((meshItem:MeshItem, index:number) => {
       if ((index + currentIndex) === meshId) {
@@ -39,7 +42,7 @@ const locateMesh = function (root: MeshOrRoot, meshId: number, currentIndex: num
       }
     })
   }
-  throw Error('mesh not found')
+  throw Error('mesh not found ')
 }
 
 export const addMeshAt = function (post:Post, meshId:number, pos:number = 0) {
