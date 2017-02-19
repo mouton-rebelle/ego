@@ -54,14 +54,6 @@ export class TagList extends Component {
       })
     }
   }
-  static propTypes={
-    tags: PropTypes.array.isRequired,
-    init: PropTypes.func.isRequired,
-    allTags: PropTypes.array.isRequired,
-    reference: PropTypes.object.isRequired,
-    removeTagForRef: PropTypes.func.isRequired,
-    addTagForRef: PropTypes.func.isRequired
-  };
   componentDidMount () {
     if (this.props.tags.length < 40) {
       this.props.init()
@@ -102,6 +94,14 @@ const mapStateToProps = (state, ownProps) => {
     tags,
     allTags: state.tags.all
   }
+}
+TagList.propTypes = {
+  tags: PropTypes.array.isRequired,
+  init: PropTypes.func.isRequired,
+  allTags: PropTypes.array.isRequired,
+  reference: PropTypes.object.isRequired,
+  removeTagForRef: PropTypes.func.isRequired,
+  addTagForRef: PropTypes.func.isRequired
 }
 export default connect((mapStateToProps), {
   removeTagForRef,

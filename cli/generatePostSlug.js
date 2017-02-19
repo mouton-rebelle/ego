@@ -1,4 +1,4 @@
-import Monk from 'monk'
+import Monk from 'monkii'
 import { getSlug } from '../server/api/posts'
 let conn = Monk('localhost/ego')
 let db = {

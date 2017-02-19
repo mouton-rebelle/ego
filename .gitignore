@@ -1,8 +1,7 @@
 .DS_STORE
 *.log
-
+.DS_Store
 node_modules
-
 dist
 coverage
 src/static/orig

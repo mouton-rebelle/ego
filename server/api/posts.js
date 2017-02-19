@@ -84,7 +84,7 @@ export const getByRange = async function (...range) {
     {
       sort: { order: -1 },
       limit: count,
-      skip: range[0]
+      skip: parseInt(range[0])
     })
   let total = await db.posts.count({})
 

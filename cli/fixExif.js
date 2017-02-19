@@ -1,4 +1,4 @@
-import Monk from 'monk'
+import Monk from 'monkii'
 import { getExifPromise, SAVE_DIR } from '../server/api/file'
 let conn = Monk('localhost/ego')
 let db = {
